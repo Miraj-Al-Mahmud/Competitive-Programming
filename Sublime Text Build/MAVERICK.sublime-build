@@ -1,8 +1,0 @@
-{
-    "cmd": ["python", "$file"],
-    "focus": true,
-	"timeit": true,
-    "target": "terminus_exec",
-    "selector": "source.python",
-    "file_regex": "^\\s*File \"(...*?)\", line ([0-9]*)"
-}
