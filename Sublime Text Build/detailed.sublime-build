@@ -1,0 +1,28 @@
+{
+	"target": "terminus_exec",
+	"cancel": { "keys" : ["ctrl+alt+c"], "command": "cancel_build"},
+
+	"focus": true,
+	"timeit": true,
+	"cmd": ["python3", "-u", "$file"],
+	"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+	"selector": "source.python",
+
+	"env": {"PYTHONIOENCODING": "utf-8"},
+
+	"windows": {
+		"cmd": ["py", "-u", "$file"],
+	},
+
+	"variants":
+	[
+		{
+			"name": "Syntax Check",
+			"cmd": ["python3", "-m", "py_compile", "$file"],
+
+			"windows": {
+				"cmd": ["py", "-m", "py_compile", "$file"],
+			}
+		}
+	]
+}
