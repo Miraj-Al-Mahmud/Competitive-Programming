@@ -17,10 +17,7 @@ negative_infinity : float = float('-inf')
 
 def _obfds_() -> None:
     for tc in range(ii()):
-        a = mi()
-        if a > b:
-            divide = 
-        else: print(f"NO",end="\n")
+        print(f"{2}",end="\n")
         
 if __name__ == "__main__":
     try: from __obfds__ import o_b_f_d_s, _generator_; o_b_f_d_s(); _obfds_(); _generator_(); 

@@ -1,6 +1,4 @@
-7
-7
-1
-5
-1
-9
+Verdict		>->		Wrong Answer
+A/C			>->		Error at line 1/11
+Expected 	>->		'YES'
+Got 	 	>->		'2'
