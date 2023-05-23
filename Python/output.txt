@@ -1,4 +1,2 @@
-Verdict		>->		Wrong Answer
-A/C			>->		Error at line 1/11
-Expected 	>->		'YES'
-Got 	 	>->		'2'
+Verdict	>->		OK
+A/C		>->		1/1
