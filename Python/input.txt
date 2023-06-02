@@ -1,2 +1,4 @@
-code
-edoc
+3 3
+tab
+one
+bat

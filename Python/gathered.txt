@@ -1,0 +1,692 @@
+Total number of snippets >>> 68
+************************************************************************
+1th Snippet -> Name a2n 
+a2n = {chr(k):v for k,v in zip(range(97,97+27),range(1,27))}
+
+************************************************************************
+2th Snippet -> Name binarySearch 
+def binary_search_function(input_list:list, low_value:int, high_value:int,  target_value:int) -> None:
+    if high_value >= low_value:
+        middle = (high_value + low_value) // 2
+        if input_list[middle] < target_value: return binary_search_function(input_list, middle +1, high_value, target_value)
+        elif input_list[middle] > target_value: return binary_search_function(input_list, low_value, middle-1, target_value)
+        else: return middle
+    else: return [high_value,low_value]
+
+************************************************************************
+3th Snippet -> Name bubbleSort 
+def bubble_sort(arr):
+    i = 0
+    while i < len(arr):
+        j = i + 1    
+        while j < len(arr):
+            if arr[j] < arr[i]: temp = arr[i]; arr[i] = arr[j]; arr[j] = temp
+            j+=1
+        i+=1
+    return arr
+
+************************************************************************
+4th Snippet -> Name currencyChange 
+def currencyChange(change:int)->list:
+    currency,n,ans,i = [1, 2, 5, 10, 20, 50, 100, 500, 1000],len(currency),[],n-1
+    while i >= 0:
+        while (change >= currency[i]): change -= currency[i]; ans.append(currency[i])
+        i -= 1
+    return ans
+
+************************************************************************
+5th Snippet -> Name cycle 
+# listname, toBreakWhile, startingIndex, forward/reverse
+def cycle(list_name : list, breakpoint, startIndex : int = 0, direction : int = 1) -> (int, list) :
+    temp,tempStore = 0,[]
+    for idx,i in enumerate(itertools.cycle(list_name[::direction])):
+        if idx >= startIndex:
+            if i!=breakpoint: temp+=1; tempStore.append(i)
+            else: break
+    return temp, tempStore
+
+************************************************************************
+6th Snippet -> Name debugAppend 
+import baba_yaga; baba_yaga.debug('a',${1:data})
+
+************************************************************************
+7th Snippet -> Name debugWrite 
+import baba_yaga; baba_yaga.debug('w',${1:data})
+
+************************************************************************
+8th Snippet -> Name dictionary 
+for item in ${1:arrayName}:
+	${2:dick}.setdefault(item,0)
+	${2:dick}[item]+=1 
+
+************************************************************************
+9th Snippet -> Name DublyLinkedList - Copy 
+class DoublyLinkedList:
+    def __init__(self):self.head = None
+    def insertAtBeginning(self, new_data):
+        new_node = Node(new_data)
+        new_node.next = self.head
+        if self.head is not None:
+            self.head.prev = new_node
+        self.head = new_node
+    def insertAfter(self, prev_node, new_data):
+        if prev_node is None:
+            print("the given previous node cannot be NULL")
+            return
+        new_node = Node(new_data)
+        new_node.next = prev_node.next
+        prev_node.next = new_node
+        new_node.prev = prev_node
+        if new_node.next:
+            new_node.next.prev = new_node
+    def insertAtLast(self, new_data):
+        new_node = Node(new_data)
+        if self.head is None:
+            self.head = new_node
+            return
+        last = self.head
+        while last.next:
+            last = last.next
+        last.next = new_node
+        new_node.prev = last
+        return
+    def printListForward(self):
+        forward = []
+        node = self.head
+        while node:
+            forward.append(node.data)
+            last = node
+            node = node.next
+        return forward
+    def printListBackward(self):
+        backward = []
+        while last:
+            backward.append(last.data)
+            last = last.prev
+        return backward
+
+************************************************************************
+10th Snippet -> Name easeOverLapIntervals 
+def eraseOverlapIntervals(intervals:list) -> int:
+    end, cnt = float('-inf'), 0
+    for s, e in sorted(intervals, key=lambda x: x[1]):
+        if s >= end: end = e
+        else: cnt += 1
+    return cnt
+
+************************************************************************
+11th Snippet -> Name factorial 
+def factorial(n,m = 1000000007):
+    q = 1
+    for i in range(n): q = (q * (i + 1)) % m
+    return(q)
+
+************************************************************************
+12th Snippet -> Name factors 
+def factors(n:int) -> list:
+    q = []
+    for i in range(1,int(n ** 0.5) + 1):
+        if n % i == 0: q.append(i); q.append(n // i)
+    return list(sorted(list(set(q))))
+
+************************************************************************
+13th Snippet -> Name findMinimumDifference 
+def findMinDiff(arr:list, n:int) -> int:
+    arr,diff = sorted(arr),10**20
+    for i in range(n-1):
+        if arr[i+1] - arr[i] < diff: diff = arr[i+1] - arr[i]
+    return diff
+
+************************************************************************
+14th Snippet -> Name findMinimumSum 
+def findMin(arr:list) -> int:
+    n,summation = len(arr),0
+    for i in range(0, n): summation = summation + arr[i]
+    arr.sort()
+    minimum = arr[0]
+    maximim = 0
+    for i in range(n - 1, 0, -1):
+        num = arr[i]
+        total = num + minimum
+        for j in range(2, num + 1):
+            if(num % j == 0):
+                d = j
+                now = (num // d) + (minimum * d)
+                reduce = total - now
+                if(reduce > maximim): maximim = reduce
+    return summation - maximim
+
+************************************************************************
+15th Snippet -> Name finishBefore 
+finishBefore = lambda list_name, target : list(itertools.takewhile(lambda x : x != target, list_name))
+
+************************************************************************
+16th Snippet -> Name for++ 
+for ${1:referenceValue} in ${2:arrayName}: print(${1:referenceValue})
+
+************************************************************************
+17th Snippet -> Name gcd_lcm 
+def gcd(a:int,b:int) -> int: # Also known as Eucledian Algorithm
+	if b == 0: return a
+	else : return gcd(b, a % b)
+lcm = lambda a,b : (a*b)/gcd(a,b)
+
+************************************************************************
+18th Snippet -> Name graph 
+
+class Graph:
+    def __init__(self, gdict = None):
+        if gdict is None: gdict = {}
+        self.gdict = gdict
+    def getVertices(self): return list(self.gdict.keys())   # Get the keys of the dictionary
+    def addVertex(self, vtx):         # Add a vertex
+        if vtx not in self.gdict: self.gdict[vtx] = []
+    def addEdge(self, vtx, edge):      # add an Edge
+        v,e = vtx, edge
+        if vtx in self.gdict: self.gdict[vtx].append(edge)
+        else: self.gdict[vtx] = [edge]
+    def getEdges(self):
+        edgeNames = []
+        for k,v in self.gdict.items():
+            for every in v: edgeNames.append(every)
+        return list(set(edgeNames)) 
+
+
+    
+    def dfs(self, visited, graph_elements, node):
+        if node not in visited:
+            store.append(node)
+            for neighbour in graph_elements[node]:
+                self.dfs(visited, graph_elements, neighbour)
+
+************************************************************************
+19th Snippet -> Name isConsecutive 
+def isConsecutive(l:list) -> bool:
+    flag = True
+    temp = l[0]
+    t = l[1:]
+    for i in t:
+        if i != temp + 1: flag = False; break
+        elif i == temp + 1: temp = i
+    return flag
+
+************************************************************************
+20th Snippet -> Name isCube 
+def isCube(number : int) -> bool:
+    cube_root = number**(1./3.)
+    if round(cube_root) ** 3 == number: return True
+    else: return False
+
+************************************************************************
+21th Snippet -> Name isDecreasing 
+def isDecreasing(l:list) -> bool:
+    start = l[0]
+    culprit = None
+    flag = False
+    for idx,i in enumerate(l[1:]):
+        if i <= start: start = i
+        else: flag = True; culprit = idx; break
+    temp = True if not flag else culprit
+    return temp
+
+
+************************************************************************
+22th Snippet -> Name isfloat 
+isfloat = lambda num : isinstance(num, float)
+
+************************************************************************
+23th Snippet -> Name isIncreasing 
+def isIncreasing(l:list) -> bool:
+    start = l[0]
+    culprit = None
+    flag = False
+    for idx,i in enumerate(l[1:]):
+        if i >= start: start = i
+        else: flag = True; culprit = idx; break
+    temp = True if not flag else culprit
+    return temp
+
+************************************************************************
+24th Snippet -> Name isint 
+isint = lambda num : isinstance(num, int)
+
+************************************************************************
+25th Snippet -> Name isPowerOfTwo 
+isPowerOfTwo = lambda num : num and (not(num & (num - 1)))
+
+************************************************************************
+26th Snippet -> Name isPrime 
+def isPrime( n : int ) -> bool:
+    if n <= 1: return False
+    if n % 2 == 0: return n == 2
+    max_div = math.floor(math.sqrt(n))
+    for i in range(3, 1 + max_div, 2):
+        if n % i == 0: return False
+    return True
+
+************************************************************************
+27th Snippet -> Name isSquare 
+def isSquare(number : int) -> bool:
+    root = math.sqrt(number)
+    if int(root + 0.5) ** 2 == number: return True
+    else: return False
+
+************************************************************************
+28th Snippet -> Name isSubsequence 
+def isSubsequence(needle:str, haystack:str) -> bool:
+    current_pos = 0
+    for c in needle:
+        current_pos = haystack.find(c, current_pos) + 1
+        if current_pos == 0: return False
+    return True
+
+************************************************************************
+29th Snippet -> Name jobSchedulingNoProfit 
+def jobSchedulingNoProfit(arr:list)->list:
+    n,result,maxHeap = len(arr),[],[]
+    arr.sort(key=lambda x: x[1])
+    for i in range(n - 1, -1, -1):
+        if i == 0: slots_available = arr[i][1]
+        else: slots_available = arr[i][1] - arr[i - 1][1]
+        heapq.heappush(maxHeap, (-arr[i][2], arr[i][1], arr[i][0]))
+        while slots_available and maxHeap:
+            profit, deadline, job_id = heapq.heappop(maxHeap)
+            slots_available -= 1
+            result.append([job_id, deadline])
+    result.sort(key=lambda x: x[1])
+    return result
+
+************************************************************************
+30th Snippet -> Name jobSchedulingWithProfit 
+    # print result's first element as the jobs name
+def jobSchedulingWithProfit(startTime:list, endTime:list, profit:list)->int:
+    jobs = sorted(zip(startTime, endTime, profit), key=lambda v: v[1])
+    dp = [[0, 0]]
+    for s, e, p in jobs:
+        i = bisect.bisect(dp, [s + 1]) - 1
+        if dp[i][1] + p > dp[-1][1]: dp.append([e, dp[i][1] + p])
+    return dp[-1][1]
+
+************************************************************************
+31th Snippet -> Name largestSubarray 
+def largest_subarray(a,n):
+    tmp_list = []
+    max = 0
+    for i in a:
+        if i not in tmp_list:
+            tmp_list.append(i)
+        else:
+            max = len(tmp_list) if len(tmp_list) > max else max
+            tmp_list = [i]
+    print (tmp_list)
+
+************************************************************************
+32th Snippet -> Name lcmOfArray 
+def LCMofArray(a:list) -> int:
+    lcm = a[0]
+    for i in range(1,len(a)): lcm = lcm*a[i]//math.gcd(lcm, a[i])
+    return lcm
+
+************************************************************************
+33th Snippet -> Name longestPalindrome 
+def longestPalindrome(s:list) -> list:
+    dp = [[False for i in range(len(s))] for i in range(len(s))]
+    for i in range(len(s)): dp[i][i] = True
+    max_length = 1
+    start = 0
+    for l in range(2,len(s)+1):
+        for i in range(len(s)-l+1):
+            end = i+l
+            if l==2:
+               if s[i] == s[end-1]:
+                  dp[i][end-1]=True
+                  max_length = l
+                  start = i
+            else:
+               if s[i] == s[end-1] and dp[i+1][end-2]:
+                  dp[i][end-1]=True
+                  max_length = l
+                  start = i
+    return s[start:start+max_length]
+
+************************************************************************
+34th Snippet -> Name makeTwoBinaryEqual 
+def makeTwoBinaryEqual(list1: list, list2: list) -> None:
+    absolute,list1Length,list2Length = abs(len(list1) - len(list2)),len(list1),len(list2)
+    if list1Length > list2Length :
+        for i in range(absolute) : list2.insert(0,'0')
+    elif list1Length < list2Length :
+        for i in range(absolute) : list1.insert(0,'0')
+
+************************************************************************
+35th Snippet -> Name maxIncreasingSubarray 
+def maxIncreasingSubArray(arr : list) -> int:
+    c,temp = 1,[]
+    if len(arr)==1: return 1
+    else:
+        start,idx = arr[0],1
+        while idx < len(arr):
+            if arr[idx] > start: start = arr[idx]; c+=1
+            else: temp.append(c); start = arr[idx]; c = 1
+            idx+=1
+        temp.append(c)
+        return max(temp)
+
+************************************************************************
+36th Snippet -> Name maxSubarraySum 
+def maxSubarraySum(n:int, array:list) -> int:
+    best = s = 0
+    for k in range(n):
+        s = max(array[k],s+array[k])
+        if s < 0 and max(best,s)==0 and min(best,s)<0: best = s
+        else : best = max(best,s)
+    return best
+
+************************************************************************
+37th Snippet -> Name minimumDifference 
+def findMinDiff(arr, n):
+    arr = sorted(arr)
+    diff = 10**20
+    for i in range(n-1):
+        if arr[i+1] - arr[i] < diff: diff = arr[i+1] - arr[i]
+    return diff
+
+************************************************************************
+38th Snippet -> Name minimumSum 
+# Function to return the minimum sum
+def findMin(arr):
+    n = len(arr)
+    sum = 0
+    for i in range(0, n): sum = sum + arr[i]
+    arr.sort()
+    min = arr[0]
+    max = 0
+    for i in range(n - 1, 0, -1):
+        num = arr[i]
+        total = num + min
+        for j in range(2, num + 1):
+            if(num % j == 0):
+                d = j
+                now = (num // d) + (min * d)
+                reduce = total - now
+                if(reduce > max): max = reduce
+    return sum - max
+
+************************************************************************
+39th Snippet -> Name n2a 
+n2a = {v:chr(k) for k,v in zip(range(97,97+27),range(1,27))}
+
+************************************************************************
+40th Snippet -> Name nCr 
+def ncr(n:int,r:int) -> int:
+    if r > n: return(0)
+    else: return(math.factorial(n) // (math.factorial(n - r) * math.factorial(r)))
+
+************************************************************************
+41th Snippet -> Name Node 
+class Node:
+    def __init__(self,data = None): self.data,self.next,self.prev=data,None,None
+
+************************************************************************
+42th Snippet -> Name nPr 
+def npr(n:int,r:int) -> int:
+    if r > n: return(0)
+    else: return(math.factorial(n) // math.factorial(n - r))
+
+************************************************************************
+43th Snippet -> Name nsu 
+ii  = lambda : int(input())                           
+si  = lambda : input()                               
+mi  = lambda : map(int,input().strip().split(" "))   
+msi = lambda : map(str,input().strip().split(" "))   
+li  = lambda : list(mi())                            
+lsi = lambda : list(msi())                 
+
+${1:main}
+
+************************************************************************
+44th Snippet -> Name orderLowercase 
+orderLowercase = lambda character : ord(character)-97
+
+************************************************************************
+45th Snippet -> Name orderUppercase 
+orderUppercase = lambda character : ord(character)-65
+
+************************************************************************
+46th Snippet -> Name pascalsTriangle 
+def pascals_triangle(n:int)-> list:
+    triangle = []
+    for i in range(n):
+        sr = []
+        for j in range(i+1): sr.append(math.factorial(i)//(math.factorial(j)*math.factorial(i-j)))
+        triangle.append(sr)
+    return triangle
+
+************************************************************************
+47th Snippet -> Name powerOfTwo 
+def power_two(x:int) -> int: return (x and (not(x & (x - 1))))
+
+************************************************************************
+48th Snippet -> Name powerSet 
+def powerset(some_list:list)->list:
+    if len(some_list) == 0: return [[]]
+    subsets = []
+    first_element = some_list[0]
+    remaining_list = some_list[1:]
+    for partial_subset in powerset(remaining_list):
+        subsets.append(partial_subset)
+        subsets.append(partial_subset[:] + [first_element])
+    return subsets
+
+************************************************************************
+49th Snippet -> Name prefixSum 
+def prefixSum(arr:list) -> list:
+    newArray,idx = [],0
+    while idx < len(arr):
+        if idx==0: newArray.append(arr[idx])
+        else: ans = arr[idx] + newArray[-1]; newArray.append(ans)
+        idx+=1
+    return newArray
+
+************************************************************************
+50th Snippet -> Name primeFactors 
+def prime_factors(n:int) -> list:
+    q = []
+    while n % 2 == 0: q.append(2); n = n // 2
+    for i in range(3,int(n ** 0.5) + 1,2):
+        while n % i == 0: q.append(i); n = n // i
+    if n > 2: q.append(n)
+    return list(sorted(q))
+
+************************************************************************
+51th Snippet -> Name primeNumberOrNot 
+def isPrime(num):
+    flag = False
+    if num > 1:
+        for i in range(2, num):
+            if (num % i) == 0:
+                flag = True
+                break    
+    return flag
+
+************************************************************************
+52th Snippet -> Name print 
+print(f"{${1:value}}",end="\n")
+
+************************************************************************
+53th Snippet -> Name project 
+import pyperclip, time
+import json,datetime
+from datetime import date
+from send2trash import send2trash
+import os, webbrowser, pyautogui, shutil, colorama
+from tkinter import *
+from prettytable import PrettyTable
+from tabulate import tabulate
+from colorama import Fore, Back, Style
+colorama.init(autoreset=True)
+from ping3 import ping, verbose_ping # ping("address")
+### from pythonping import ping # ping("address",verbose=True)
+
+#os.system('mode con: cols=80 lines=50')
+nl = lambda lines : print(lines*"\n", end="")
+
+RED =  F"{Fore.RED}"
+GREEN =  F"{Fore.GREEN}"
+YELLOW = F"{Fore.YELLOW}"
+BLUE = F"{Fore.BLUE}"
+MAGENTA = F"{Fore.MAGENTA}"
+CYAN = F"{Fore.CYAN}"
+WHITE =  F"{Fore.WHITE}"
+
+LRED =  F"{Fore.LIGHTRED_EX}"
+LGREEN =  F"{Fore.LIGHTGREEN_EX}"
+LYELLOW = F"{Fore.LIGHTYELLOW_EX}"
+LBLUE = F"{Fore.LIGHTBLUE_EX}"
+LMAGENTA = F"{Fore.LIGHTMAGENTA_EX}"
+LCYAN = F"{Fore.LIGHTCYAN_EX}"
+LWHITE = F"{Fore.LIGHTWHITE_EX}"
+
+def main() -> None:
+	${1:pass}
+	
+if __name__ == "__main__":	main()
+
+************************************************************************
+54th Snippet -> Name repeatedSubstringPattern 
+def repeatedSubstringPattern(s: str) -> bool:
+    for i in range(1,int(len(s)/2)+1):
+        if set(s.split(s[0:i])) == {''}: return True 
+    return False
+
+************************************************************************
+55th Snippet -> Name schedule 
+def eraseOverlapIntervals(intervals):
+    end, cnt = float('-inf'), 0
+    for s, e in sorted(intervals, key=lambda x: x[1]):
+        if s >= end: end = e
+        else: cnt += 1
+    return cnt
+
+************************************************************************
+56th Snippet -> Name sieveOfErathroses 
+def seive(n : int) -> list:
+    allprime,prime,p = [1],[True for i in range(n + 1)],2
+    while (p * p <= n): 
+        if (prime[p] == True): 
+            for i in range(p ** 2,n + 1,p): prime[i] = False
+        p = p + 1
+    for p in range(2,n + 1): 
+        if prime[p]: allprime.append(p)
+    return allprime
+
+************************************************************************
+57th Snippet -> Name SinglyLinkedList 
+class SinglyLinkedList:
+    def __init__(self): self.head = None
+    def listPrint(self):
+        printval = self.head
+        while printval is not None:print(f"{printval.data}",end="\n");printval = printval.next
+    def insertAtBeginning(self, newData): NewNode=Node(newData);NewNode.next=self.head;self.head=NewNode
+    def insertAtLast(self, newData):
+        NewNode = Node(newData)
+        if self.head is None: self.head=NewNode;return
+        last = self.head
+    def Inbetween(self,middle_node,newdata):
+        if middle_node is None:print("The mentioned node is absent");return
+        NewNode = Node(newdata)
+        NewNode.nextval = middle_node.nextval
+        middle_node.nextval = NewNode
+
+************************************************************************
+58th Snippet -> Name sortByDictionaryValues 
+sortByValues = lambda dick : {k: v for k, v in sorted(dick.items(), key=lambda item: item[1])}
+
+************************************************************************
+59th Snippet -> Name sortByReversedValues 
+sortByValuesReversed = lambda dick : {k: v for k, v in sorted(dick.items(), key=lambda item: item[1], reverse=True)}
+
+************************************************************************
+60th Snippet -> Name startFrom 
+startFrom = lambda list_name, target : list(itertools.dropwhile(lambda x : x != target, list_name))
+
+************************************************************************
+61th Snippet -> Name template 
+# BOOGEYMAN >>> Version 10.0
+import os, sys, math, heapq, itertools, bisect
+from string import ascii_lowercase, ascii_uppercase
+from collections import deque, defaultdict, OrderedDict, Counter
+ii  = lambda : int(input())                           
+si  = lambda : input()                               
+mi  = lambda : map(int,input().strip().split(" "))   
+msi = lambda : map(str,input().strip().split(" "))   
+li  = lambda : list(mi())                            
+lsi = lambda : list(msi())                 
+positive_infinity : float = float('inf')
+negative_infinity : float = float('-inf')
+
+def BOOGEYMAN() -> None:
+    '''
+    ${1:Query}
+    '''
+    for tc in range(ii()):
+       ${2:Query} 
+    
+if __name__ == "__main__":
+    try: from baba_yaga import cmdIO, _generator_; cmdIO(); BOOGEYMAN(); _generator_(); 
+    except (FileNotFoundError,ModuleNotFoundError): BOOGEYMAN()
+
+************************************************************************
+62th Snippet -> Name ternary 
+print("YES") if ${2:condition} else print("NO")
+
+************************************************************************
+63th Snippet -> Name toBinary 
+toBinary = lambda num : int(str(bin(num))[2:])
+
+************************************************************************
+64th Snippet -> Name treeTraversal 
+# Works for binary tree also
+class Node:
+    def __init__(self, item):
+        self.left = None
+        self.right = None
+        self.val = item
+
+inorderStore, postorderStore, preorderStore = [],[],[]
+
+def inorder(root):
+    # In - Order >>> Left - Process - Right
+    if root: inorder(root.left); inorderStore.append(root.val); inorder(root.right)
+    return inorderStore
+
+def postorder(root):
+    # Post - Order >>> Left - Right - Process
+    if root: postorder(root.left); postorder(root.right); postorderStore.append(root.val)
+    return postorderStore
+def preorder(root):
+    # Pre - Order >>> Process - Left - Right
+    if root: preorderStore.append(root.val); preorder(root.left); preorder(root.right)
+    return preorderStore
+def flushNodeStores() -> None:
+    inorderStore.clear()
+    preorderStore.clear()
+    postorderStore.clear()
+
+************************************************************************
+65th Snippet -> Name trueFalse 
+print('FTARLUSEE'[${1:condition}::2])
+
+************************************************************************
+66th Snippet -> Name vowels 
+vowels = ['a','e','i','o','u']
+
+************************************************************************
+67th Snippet -> Name whileLoop 
+idx = 0
+while ${1:condition}:
+	idx+=1
+
+************************************************************************
+68th Snippet -> Name yesNo 
+print('YNEOS'[${1:condition}::2])
