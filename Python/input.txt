@@ -1,4 +1,7 @@
-3 3
-tab
-one
-bat
+3
+8
+abacabac
+5
+qzxcq
+20
+ccooddeeffoorrcceess

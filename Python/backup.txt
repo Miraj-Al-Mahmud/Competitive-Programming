@@ -1,39 +1,99 @@
-# BOOGEYMAN >>> Version 9.0
-from __future__ import division, print_function
-from io import BytesIO, IOBase
-import os, sys, math, heapq, itertools, bisect
-from string import ascii_lowercase, ascii_uppercase
-from collections import deque,defaultdict, OrderedDict, Counter
-ii  = lambda : int(input())                           
-si  = lambda : input()                               
-mi  = lambda : map(int,input().strip().split(" "))   
-msi = lambda : map(str,input().strip().split(" "))   
-li  = lambda : list(mi())                            
-lsi = lambda : list(msi())
-iseven = lambda num : num & 1 == 0 # num%2==0                       
-isodd = lambda num : num & 1 == 1 # num%2==1                        
-positive_infinity : float = float('inf')
-negative_infinity : float = float('-inf')
 
-def BOOGEYMAN() -> None:
-    '''
-    '''
+AF
+for tc in range(ii()):
+       a,b = mi()
+       print(f"{math.gcd(a,b)} {math.lcm(a,b)}",end="\n") 
+       
+AR
+for tc in range(ii()):
+       quantity, price = mi()
+       discount = 0
+       ans = (quantity * price)
+       if quantity >= 1200: ans = ans - (ans*10/100)
+       print(f"{ans:.6f}",end="\n")
+       
+       
+AZ
+    a,b,c = mi()
+    # largest is the hypotenuse
+    yellow = math.pi * ((max(a,b,c)/2)**2)
+    l = [a,b,c]
+    l.remove(max(a,b,c))
+    violet = .5 *  min(l) * max(l)
+    red = math.pi * ((max(a,b,c))+l[0]-l[1]/2)**2
+    
+    v = violet - red
+    y = yellow - violet
+    print(f"{red} {v} {y}",end="\n")    
+    
+    
+    
+q
+            
+    s1 = si()
+    s2 = si()
+    h3 = (int(s1[0]+s1[1])*60+int(s2[0]+s2[1]))//2
+    h4 = (int(s1[3]+s1[4])*60+int(s2[3]+s2[4]))//2
+    h5 = (h3+h4)//2
+    h = h5//60
+    m = h5%60
+    if (h>9 and m>9): print(f"{h}:{m}",end="\n")
+    else:
+        if h<10: print(f"{0}",end="")
+        print(f"{h}:",end="")
+        if m<10: print(0, end="")
+        print(f"{m}",end="\n")
+        
+        
+        
+        
+        
+
+        
+        
+        
+Z
+
+def classifier(string:str) -> str:
+        builder = ""
+        for idx,s in enumerate(string):
+            if s.isalpha(): builder+=s
+            else: 
+        return builder.lower()
+        
+        
+        
+    store = []
     while True:
-        a,b = mi()
-        if a == b  == 0: break
-        else:
-            store = []
-            for i in range(a):
-                string = si()
-                store.append(string)
-            # begin the calculation
-            found = []
-            for idx1,i in enumerate(store):
-                for _ in i: # by row
-                    if _=='*': 
-                    
-                    
-                    
-if __name__ == "__main__":
-    try: from baba_yaga import cmdIO, _generator_; cmdIO(); BOOGEYMAN(); _generator_(); 
-    except (FileNotFoundError,ModuleNotFoundError): BOOGEYMAN()
+        try:
+            s = input()
+            store.append(s)
+        except EOFError: break
+        
+    l = []
+    for line in store:
+        word = line.split(" ")
+        for w in word:
+            final = classifier(w)
+            l.append(final)
+    m = list(set(l))
+    m.sort()
+    for i in m: print(f"{i}",end="\n")
+    
+    
+    
+y
+    idx = 0
+    while True:
+        try:
+            l = li()
+            v = []
+            m = [0]*(max(l)+1)
+            for i in l:
+                if m[i]==0: v.append(i)
+                m[i]+=1
+            for i in v:
+                if idx > 0: print(f"",end="\n")
+                print(f"{i} {m[i]}",end="")
+                idx+=1
+        except EOFError: break

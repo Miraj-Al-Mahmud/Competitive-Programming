@@ -87,43 +87,40 @@ Sixteen
 # AwEsOmE
 
 
-capitalize() == toupper()
-itertools.compress()
-1e10
-gcd lcm already in math library
-iter()
+
+itertools.compress(first_array, second_array) like the zip function returns the bool
 most_common()
 
-myit = iter(mytuple)
-print(next(myit)) # apple
 
 scores = [66, 90, 68, 59, 76, 60, 88, 74, 81, 65]
 over_75 = list(filter(lambda x: x>75, scores)) # [90, 76, 88, 81]
 
 >>> Those function who have the tendency to start from the left will always have a funtion that statrs with a r
-count(value, startIndex, endIndex)
-find(value, startIndex, endIndex)
-rfind() <<< find from the left
+arrayname.count(value)
 index(value, startIndex, endIndex)
 rindex() <<< index from the right
-partition()
+
+partition() >>> makes 3 values from a string
 rpartition() <<< starts from the right
+
 swapcase()
-i = x.translate(dick) << for translating the order of letters
-x.zfill(fillValueFromTheLeft)
+
+string.zfill(num_to_fill) >>> for printing
 try , finally keyword
-# empty list, 1, 0, less than num ...    
-# orderedDict -> remembers the insertionorder
+
+
 # ~1 means 2 >>> apoprox value
 # for i in reversed(range(0,3)): print(f"{i}",end="\n") >>> 2,1,0
 # for i in range(3,-1,-1): print(i) >>> 3,2,1
-# str.find()
-# str.rfind()
+
 # str.endswith("is", 2, 4)
+
 # cars.sort(key=lambda x: len(x) )
 # for else
+
 # bisect.bisect_left returns the leftmost place in the sorted list to insert the given element
 # bisect.bisect_right returns the rightmost place in the sorted list to insert the given element
+
 # divmod(8,3) >>> (2,2)
 
 not necessary to put the start and end points in an array
@@ -132,10 +129,7 @@ not necessary to put the start and end points in an array
 # print(f"{next(x)}",end="\n")
 # print(f"{next(x)}",end="\n")
 
-# from collectuions import deque # its the full form of double ended queue
-# deq = deque(listname)
-# deq.appendleft(value)
-# deq.popleft(value)
+
 
 
 
@@ -160,60 +154,4 @@ i.e. 3 & 1 = 1, 2 & 1 = 0
 
 # backed up for future use
 
-
-# pyrival template 
-if sys.version_info[0] < 3:
-    from __builtin__ import xrange as range
-    from future_builtins import ascii, filter, hex, map, oct, zip
-# region fastio
-BUFSIZE = 8192
-class FastIO(IOBase):
-    newlines = 0
-    def __init__(self, file):
-        self._file = file
-        self._fd = file.fileno()
-        self.buffer = BytesIO()
-        self.writable = "x" in file.mode or "r" not in file.mode
-        self.write = self.buffer.write if self.writable else None
-    def read(self):
-        while True:
-            b = os.read(self._fd, max(os.fstat(self._fd).st_size, BUFSIZE))
-            if not b: break
-            ptr = self.buffer.tell()
-            self.buffer.seek(0, 2), self.buffer.write(b), self.buffer.seek(ptr)
-        self.newlines = 0
-        return self.buffer.read()
-    def readline(self):
-        while self.newlines == 0:
-            b = os.read(self._fd, max(os.fstat(self._fd).st_size, BUFSIZE))
-            self.newlines = b.count(b"\n") + (not b)
-            ptr = self.buffer.tell()
-            self.buffer.seek(0, 2), self.buffer.write(b), self.buffer.seek(ptr)
-        self.newlines -= 1
-        return self.buffer.readline()
-    def flush(self):
-        if self.writable:
-            os.write(self._fd, self.buffer.getvalue())
-            self.buffer.truncate(0), self.buffer.seek(0)
-class IOWrapper(IOBase):
-    def __init__(self, file):
-        self.buffer = FastIO(file)
-        self.flush = self.buffer.flush
-        self.writable = self.buffer.writable
-        self.write = lambda s: self.buffer.write(s.encode("ascii"))
-        self.read = lambda: self.buffer.read().decode("ascii")
-        self.readline = lambda: self.buffer.readline().decode("ascii")
-def print(*args, **kwargs):
-    """Prints the values to a stream, or to sys.stdout by default."""
-    sep, file = kwargs.pop("sep", " "), kwargs.pop("file", sys.stdout)
-    at_start = True
-    for x in args:
-        if not at_start: file.write(sep)
-        file.write(str(x))
-        at_start = False
-    file.write(kwargs.pop("end", "\n"))
-    if kwargs.pop("flush", False): file.flush()
-if sys.version_info[0] < 3: sys.stdin, sys.stdout = FastIO(sys.stdin), FastIO(sys.stdout)
-else: sys.stdin, sys.stdout = IOWrapper(sys.stdin), IOWrapper(sys.stdout)
-input = lambda: sys.stdin.readline().rstrip("\r\n")
 '''
