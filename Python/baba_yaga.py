@@ -1,11 +1,18 @@
 # BOOGEYMAN
-import sys, os
+import sys, os, logging
 get_file = os.path.split(os.path.abspath(__file__))
 LOCAL : str = get_file[0] 
 input_file : str = f"{LOCAL}/input.txt"
 output_file : str = f"{LOCAL}/output.txt"
 debug_file : str = f"{LOCAL}/debug.txt"
 accepted_file : str = f"{LOCAL}/accepted.txt"
+log_file : str = f"{LOCAL}/log.txt"
+
+
+# logging.basicConfig(filename=log_file, filemode='w', format='%(name)s - %(levelname)s - %(message)s',level=logging.INFO)
+logging.basicConfig(filename=log_file, filemode='w', format='%(message)s',level=logging.INFO)
+
+log = lambda string : logging.info(string)
 
 # moved 11-03-2023 >>> EDITED 
 def debug(appendMode : str, *var) -> None:
@@ -88,6 +95,16 @@ Sixteen
 
 
 
+itertools.product(array1, array2) >>> basically makes pair
+
+def dec(function):
+    def wrapper():
+        print(f"My name is Miraj Al Mahmud Khan",end="\n")
+        function()
+    return wrapper
+    
+itertools.dropwhile(lambda x:)
+itertools.takewhile(lambda x:)
 itertools.compress(first_array, second_array) like the zip function returns the bool
 most_common()
 

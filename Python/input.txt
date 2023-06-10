@@ -1,7 +1,4 @@
-3
-8
-abacabac
-5
-qzxcq
-20
-ccooddeeffoorrcceess
+1
+5 5
+1 2 3 2 1
+1 2 5 2 3
