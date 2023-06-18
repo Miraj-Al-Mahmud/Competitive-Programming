@@ -12,7 +12,7 @@ log_file : str = f"{LOCAL}/log.txt"
 # logging.basicConfig(filename=log_file, filemode='w', format='%(name)s - %(levelname)s - %(message)s',level=logging.INFO)
 logging.basicConfig(filename=log_file, filemode='w', format='%(message)s',level=logging.INFO)
 
-log = lambda string : logging.info(string)
+L = lambda string : logging.info(string)
 
 # moved 11-03-2023 >>> EDITED 
 def debug(appendMode : str, *var) -> None:
@@ -69,9 +69,9 @@ def _generator_() -> None:
 
 def F15() -> None: sys.stdout = open(F'{output_file}', 'w')
 
-	
 
 
+# if __name__ == '__main__': launcher()
 
 
 
@@ -95,6 +95,7 @@ Sixteen
 
 
 
+filter(lambda x: something, array_name)
 itertools.product(array1, array2) >>> basically makes pair
 
 def dec(function):

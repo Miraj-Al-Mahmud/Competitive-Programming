@@ -1,5 +1,6 @@
 import os, sys
 from distutils.dir_util import copy_tree
+from send2trash import send2trash
 
 
 snippet_dir = "D:\\Python\\CompetitiveProgramming\\Portable\\MAVERICK\\Data\\Packages\\User\\Snippets"
@@ -60,7 +61,7 @@ def main() -> None:
 	text = file.read()
 	file.close()
 	text_to_pdf(text, output_filename)
-	
+	send2trash(to_directory) # new addition >>> remove the copied file
 
 
 if __name__ == "__main__": main()
