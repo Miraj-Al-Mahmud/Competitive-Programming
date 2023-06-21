@@ -3,24 +3,32 @@ def BoogeyMan() -> None:
     '''
     Query
     '''
+    n2a = {v:chr(k) for k,v in zip(range(97,97+27),range(1,27))}
+
     for _ in range(ii()):
         length = ii()
         s = si()
-        c = len(s)
-        start = 0
-        end = len(s)-1
-        try:
-            if len(s)==1: c = 1
-            else:
-                while True:
-                    if s[start] == s[end]: break
+        length-=1
+        sb = ""
+        while length >= 0:
+            if s[length]=='0':
+                n = int(s[length-2]+s[length-1])
+                if s[length-1]!='0':
+                    sb+=n2a[n]
+                    
+                else:
+                    if s[length-2]=='1':
+                        sb+=n2a[10][::-1]
                     else:
-                        start+=1
-                        end-=1
-                        c-=2
-        except IndexError: c = 0
-        print(f"{c}",end="\n")
-            
+                        sb+=n2a[20][::-1]
+
+                length-=2
+            else:
+                sb+=n2a[int(s[length])]
+
+            length-=1
+        p(sb[::-1]) 
+
 if __name__ == "__main__":
     import os, sys, math, itertools, bisect
     from collections import deque, defaultdict, OrderedDict, Counter
@@ -28,10 +36,11 @@ if __name__ == "__main__":
     ii,si = lambda : int(input()), lambda : input()               
     mi, msi  = lambda : map(int,input().strip().split(" ")), lambda : map(str,input().strip().split(" ")) 
     li, lsi = lambda : list(mi()), lambda : list(msi())
+    out, export, p, pp = [], lambda : print('\n'.join(map(str, out))), lambda x : out.append(x), lambda array : p(' '.join(map(str,array)))
     try:
         from baba_yaga import L, cmdIO, _generator_
         class _BoogeyMan_:
-            def __init__(self) -> None: self.launchers = [cmdIO(), BoogeyMan(), _generator_()]
+            def __init__(self) -> None: self.launchers = [cmdIO(), BoogeyMan(), export(), _generator_()]
             def init(self) -> None:
                 for _ in self.launchers: yield _ ; assert not _ , "EOF" 
             def container(fun) :
@@ -40,4 +49,4 @@ if __name__ == "__main__":
         @_BoogeyMan_.container
         def assembler() : _BoogeyMan_().init()
         assembler()
-    except (FileNotFoundError,ModuleNotFoundError): BoogeyMan()
+    except (FileNotFoundError,ModuleNotFoundError): input = sys.stdin.readline; BoogeyMan(); export()

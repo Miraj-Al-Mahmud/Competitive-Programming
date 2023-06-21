@@ -7,21 +7,13 @@
 def main() -> None:
 	
 	
-	
 
+	n = [0,3,7,2,5,8,4,6,0,1]
 
-	sequence = "ababc"
-	word = "ab"
+	n.sort()
 
+	return n
 
-	length = len(word)
-	c = 0
-	for idx,s in enumerate(sequence):
-		try:
-			ans = sequence.index(word, idx,idx+length-1)
-			c+=1
-		except ValueError: pass
-	return c
 
 
 	
