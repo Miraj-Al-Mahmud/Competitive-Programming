@@ -13,6 +13,9 @@ log_file : str = f"{LOCAL}/log.txt"
 logging.basicConfig(filename=log_file, filemode='w', format='%(message)s',level=logging.INFO)
 
 L = lambda string : logging.info(string)
+def LT(tc, custom, string) :
+	tc+=1;
+	if tc == custom: logging.info(string)
 
 # moved 11-03-2023 >>> EDITED 
 def debug(appendMode : str, *var) -> None:
