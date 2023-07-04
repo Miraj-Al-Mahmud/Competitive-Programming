@@ -1,5 +1,6 @@
 # BOOGEYMAN
-import sys, os, logging
+import sys, os, logging, math
+from collections import defaultdict, Counter
 get_file = os.path.split(os.path.abspath(__file__))
 LOCAL : str = get_file[0] 
 input_file : str = f"{LOCAL}/input.txt"
@@ -72,6 +73,129 @@ def _generator_() -> None:
 
 def F15() -> None: sys.stdout = open(F'{output_file}', 'w')
 
+
+class Visualizer:
+    def __init__(self, l: list):
+        self.l = l
+        self.idx = 1
+        self.counter = 1
+        self.store = []
+        self.dick = defaultdict(list)
+        self.length = len(l)
+        self.maxVal = max(l)
+
+    def filler(self, num:int):
+        s = str(num) if num!=0 else '00'
+        return s.zfill(2)
+
+    def adder(self):
+        self.dick[0].append(self.l[0]) # add the first element
+        while self.idx < self.length:
+            try:
+                start = (2**self.idx)-1
+                end = (2**(self.idx+1))-1
+                for i in range(start,end): self.dick[self.counter].append(self.filler(self.l[i]))
+                self.counter+=1
+                self.idx += 1
+            except IndexError: break
+
+    def height_shortener(self, height) -> list:
+        store = [0,2]
+        counter = idx = 2
+        while counter < height:
+            idx = idx*2 + 1
+            store.append(idx)
+            counter+=1
+        return store
+
+    def printer(self):
+        h = self.height_shortener(self.counter+1)
+        idx = -1
+        for k,v in self.dick.items():
+            # print(f"{' '*h[idx]}",end="") # before space for nums
+            temp = []
+            temp.append(f"{' '*h[idx]}")
+            #for nums in v: print(f"{nums}{' '*(h[idx+1]-1)}",end="") # the elements
+            for nums in v: temp.append(f"{nums}{' '*(h[idx+1]-1)}")
+            #temp.append('\n')
+            idx-=1
+            self.store.append(''.join(temp))
+
+            """ Code for adding the hyphens
+            try:
+                print(f"{' '*(h[idx]+2)}",end="") # space before the tree branch >>> added 2 instead of -1
+                nodes = len(v)
+                #for nums in range(nodes-1): print(f"{'-'*(h[idx+1]-1)}{' '*(h[idx+1]-1)}",end="") # the branches
+                for nums in range(nodes): print(f"{'-'*(h[idx+1]-1)}{' '*(h[idx+1]+2)}",end="") # the branches
+                print(f"",end="\n")
+            except IndexError: pass
+            """
+        return self.store
+
+    def process(self) -> list:
+        self.adder()
+        self.printer()
+        return self.store
+
+def see(l:list):
+    v = Visualizer(l)
+    temp = v.process()
+    for i in temp: L(i)
+
+class INFO:
+    def __init__(self, l : list):
+        self.l = l
+        self.len = len(l)
+        self.sorted_list = sorted(self.l)
+        self.reversed_sorted = self.sorted_list[::-1]
+        self.counter = Counter(self.l)
+        self.display = []
+    
+    def isPrime( self, n : int ) -> bool:
+        if n <= 1: return False
+        if n % 2 == 0: return n == 2
+        max_div = math.floor(math.sqrt(n))
+        for i in range(3, 1 + max_div, 2):
+            if n % i == 0: return False
+        return True
+
+    def all_primes(self) -> list: return [i for i in self.l if self.isPrime(i)]
+
+    def processor(self):
+        s = self.display.append
+        nl = lambda : s('\n')
+        s('Regular\t\t>->\t'); s(self.l); nl()
+        # sorted
+        s('Sorted\t\t>->\t'); s(self.sorted_list); nl()
+        # reversed
+        s('Reverse\t\t>->\t'); s(self.sorted_list); nl()
+        # counter
+        s('Counter\t\t>->\t')
+        tempStore = []
+        for k,v in self.counter.items():
+        	tempStore.append(f"{k},{v}")
+        s(" | ".join(map(str,tempStore)))
+        nl()
+        # primes
+        kk = self.all_primes()
+        s("Primes\t\t>->\t"); s(f"{len(kk)} >-> "); s(kk); nl()
+        # evens
+        ev = [i for i in self.l if i%2==0]
+        s("Evens\t\t>->\t"); s(f"{len(ev)} >-> "); s(ev); nl()
+        # odds
+        od = [i for i in self.l if i%2==1]
+        s("Odds\t\t>->\t"); s(f"{len(od)} >-> "); s(od); nl()
+        # unique nums
+        un = [k for k,v in self.counter.items() if v == 1]
+        s('Unique\t\t>->\t'); s(f'{len(un)} >-> '); s(un); nl()
+        # dups
+        dups = [k for k,v in self.counter.items() if v > 1]
+        s('Dups\t\t>->\t'); s(f'{len(dups)} >-> '); s(dups); nl()
+
+
+        L("".join(map(str,self.display)))
+
+def info( l : list): i = INFO(l); i.processor()
 
 
 # if __name__ == '__main__': launcher()
