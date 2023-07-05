@@ -198,6 +198,10 @@ class INFO:
 def info( l : list): i = INFO(l); i.processor()
 
 
+
+
+
+
 # if __name__ == '__main__': launcher()
 
 
