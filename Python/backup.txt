@@ -1,99 +1,55 @@
+# Version 16.0
+def main() -> None:
+    # 2023-07-29 15:00:30
+    # https://codeforces.com/contest/1845/problem/C
+    for tc in range(ii()):
+        s = si()
+        dick = defaultdict(list)
+        for idx,i in enumerate(s): dick[i].append(idx)
+        length = ii()
+        start = ii()
+        stop = ii()
+        store = [i for i in range(start, stop+1)]
+        flag = False
 
-AF
-for tc in range(ii()):
-       a,b = mi()
-       print(f"{math.gcd(a,b)} {math.lcm(a,b)}",end="\n") 
-       
-AR
-for tc in range(ii()):
-       quantity, price = mi()
-       discount = 0
-       ans = (quantity * price)
-       if quantity >= 1200: ans = ans - (ans*10/100)
-       print(f"{ans:.6f}",end="\n")
-       
-       
-AZ
-    a,b,c = mi()
-    # largest is the hypotenuse
-    yellow = math.pi * ((max(a,b,c)/2)**2)
-    l = [a,b,c]
-    l.remove(max(a,b,c))
-    violet = .5 *  min(l) * max(l)
-    red = math.pi * ((max(a,b,c))+l[0]-l[1]/2)**2
-    
-    v = violet - red
-    y = yellow - violet
-    print(f"{red} {v} {y}",end="\n")    
-    
-    
-    
-q
+        prev = float('-inf')
+
+        for s in store:
+            # every number of multiple digits
+            # break it down to the digits
+            if not flag:
+                prev = float('-inf')
+                for digit in str(s):
+                    # 1 2 3 
+                    # if matched then break
+                    # else continue
+                    if dick[digit]:
+                        # check the indexes to increasing order
+                        for it,idx in enumerate(dick[digit]):
+                            if idx < prev: flag = True; break
+                            else:
+                                # mark the index , continue
+                                if idx==-1: continue
+                                else:
+                                    dick[digit][it]=-1
+                    else: flag = True; break
+            else:
+                break
+
+        if not flag: p('YES')
+        else: p('NO')
+
+
+
             
-    s1 = si()
-    s2 = si()
-    h3 = (int(s1[0]+s1[1])*60+int(s2[0]+s2[1]))//2
-    h4 = (int(s1[3]+s1[4])*60+int(s2[3]+s2[4]))//2
-    h5 = (h3+h4)//2
-    h = h5//60
-    m = h5%60
-    if (h>9 and m>9): print(f"{h}:{m}",end="\n")
-    else:
-        if h<10: print(f"{0}",end="")
-        print(f"{h}:",end="")
-        if m<10: print(0, end="")
-        print(f"{m}",end="\n")
-        
-        
-        
-        
-        
-
-        
-        
-        
-Z
-
-def classifier(string:str) -> str:
-        builder = ""
-        for idx,s in enumerate(string):
-            if s.isalpha(): builder+=s
-            else: 
-        return builder.lower()
-        
-        
-        
-    store = []
-    while True:
-        try:
-            s = input()
-            store.append(s)
-        except EOFError: break
-        
-    l = []
-    for line in store:
-        word = line.split(" ")
-        for w in word:
-            final = classifier(w)
-            l.append(final)
-    m = list(set(l))
-    m.sort()
-    for i in m: print(f"{i}",end="\n")
-    
-    
-    
-y
-    idx = 0
-    while True:
-        try:
-            l = li()
-            v = []
-            m = [0]*(max(l)+1)
-            for i in l:
-                if m[i]==0: v.append(i)
-                m[i]+=1
-            for i in v:
-                if idx > 0: print(f"",end="\n")
-                print(f"{i} {m[i]}",end="")
-                idx+=1
-        except EOFError: break
+if __name__ == "__main__":
+    #import os,sys,math,itertools;from collections import deque,defaultdict,OrderedDict,Counter
+    from collections import defaultdict
+    #from bisect import bisect,bisect_left,bisect_right,insort
+    #from heapq import heapify,heappush,heappop,nsmallest,nlargest,heapreplace, heappushpop
+    ii,si=lambda:int(input()),lambda:input()               
+    mi,msi=lambda:map(int,input().strip().split(" ")),lambda:map(str,input().strip().split(" ")) 
+    li,lsi=lambda:list(mi()),lambda:list(msi())
+    out,export,p,pp=[],lambda:print('\n'.join(map(str, out))),lambda x :out.append(x),lambda array:p(' '.join(map(str,array)))
+    try:exec('from hq import L,LT,see,info,cmdIO,_generator_\nline=[cmdIO(),main(),export(),_generator_()]\nfor l in line:l')
+    except(FileNotFoundError,ModuleNotFoundError):main();export()

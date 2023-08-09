@@ -9,17 +9,16 @@ debug_file : str = f"{LOCAL}/debug.txt"
 accepted_file : str = f"{LOCAL}/accepted.txt"
 log_file : str = f"{LOCAL}/log.txt"
 
-
 # logging.basicConfig(filename=log_file, filemode='w', format='%(name)s - %(levelname)s - %(message)s',level=logging.INFO)
-logging.basicConfig(filename=log_file, filemode='w', format='%(message)s',level=logging.INFO)
+logging.basicConfig(filename=log_file, filemode='w', format='%(message)s',level=logging.INFO) #logging defaults
 
-L = lambda string : logging.info(string)
-def LT(tc, custom, string) :
-	tc+=1;
+L = lambda string : logging.info(string) # basic log as string
+def LT(tc, custom, string) : # custo log with matching testcase
+	tc+=1
 	if tc == custom: logging.info(string)
 
 # moved 11-03-2023 >>> EDITED 
-def debug(appendMode : str, *var) -> None:
+def debug(appendMode : str, *var) -> None: # deprecated !!! >>> substituted by log module
 	if appendMode == "a":
 		with open(debug_file, 'r') as f:
 			lines = f.readlines()
@@ -32,12 +31,12 @@ def debug(appendMode : str, *var) -> None:
 		with open(debug_file, 'w') as f:
 			for idx,v in enumerate(var): f.write(f"Query {idx+1}\t>-> {str(v)}\n")
 
-def cmdIO() -> None:
+def cmdIO() -> None: # standard input output for python commands instead of terminus package
 	#input = lambda: sys.stdin.readline().rstrip()
 	sys.stdin = open(F'{input_file}', 'r')
 	sys.stdout = open(F'{output_file}', 'w')
 	
-def _generator_() -> None:
+def _generator_() -> None: # to match the generated result with the AC output as testcases only for native use
 	# close the previous file first, otherwise it won't work
 	sys.stdout.close()
 	with open(output_file, 'r+') as f: generated = f.readlines()
@@ -71,10 +70,10 @@ def _generator_() -> None:
 	except IndexError : pass
 
 
-def F15() -> None: sys.stdout = open(F'{output_file}', 'w')
+def F15() -> None: sys.stdout = open(F'{output_file}', 'w') # deprecated
 
 
-class Visualizer:
+class Visualizer: # A graph visualizer for list to graph conversion
     def __init__(self, l: list):
         self.l = l
         self.idx = 1
@@ -137,12 +136,12 @@ class Visualizer:
         self.printer()
         return self.store
 
-def see(l:list):
+def see(l:list): # Aid of Visualizer class
     v = Visualizer(l)
     temp = v.process()
     for i in temp: L(i)
 
-class INFO:
+class INFO: # Displays info about a specific array
     def __init__(self, l : list):
         self.l = l
         self.len = len(l)
@@ -161,14 +160,15 @@ class INFO:
 
     def all_primes(self) -> list: return [i for i in self.l if self.isPrime(i)]
 
-    def processor(self):
+
+    def numerical(self) -> None:
         s = self.display.append
         nl = lambda : s('\n')
         s('Regular\t\t>->\t'); s(self.l); nl()
         # sorted
         s('Sorted\t\t>->\t'); s(self.sorted_list); nl()
         # reversed
-        s('Reverse\t\t>->\t'); s(self.sorted_list); nl()
+        s('Reverse\t\t>->\t'); s(self.reversed_sorted); nl()
         # counter
         s('Counter\t\t>->\t')
         tempStore = []
@@ -176,6 +176,8 @@ class INFO:
         	tempStore.append(f"{k},{v}")
         s(" | ".join(map(str,tempStore)))
         nl()
+        # set
+        s('Set\t\t\t>->\t'); s(set(self.l)); nl();
         # primes
         kk = self.all_primes()
         s("Primes\t\t>->\t"); s(f"{len(kk)} >-> "); s(kk); nl()
@@ -195,6 +197,37 @@ class INFO:
 
         L("".join(map(str,self.display)))
 
+    def alphabetical(self):
+        s = self.display.append
+        nl = lambda : s('\n')
+        # Given list
+        s('Regular\t\t>->\t'); s(self.l); nl()
+        # sorted
+        s('Sorted lex\t>->\t'); s(self.sorted_list); nl()
+        # sorted len
+        s('Sorted len\t>->\t'); s(sorted(self.l, key=len)); nl()
+        # reversed
+        s('Reverse\t\t>->\t'); s(self.sorted_list); nl()
+        # counter
+        s('Counter\t\t>->\t')
+        tempStore = []
+        for k,v in self.counter.items():
+            tempStore.append(f"{k},{v}")
+        s(" | ".join(map(str,tempStore)))
+        nl()
+        # unique
+        un = [k for k,v in self.counter.items() if v == 1]
+        s('Unique\t\t>->\t'); s(f'{len(un)} >-> '); s(un); nl()
+        # dups
+        dups = [k for k,v in self.counter.items() if v > 1]
+        s('Dups\t\t>->\t'); s(f'{len(dups)} >-> '); s(dups); nl()
+
+
+
+        L("".join(map(str,self.display)))
+
+    def processor(self): self.numerical() if str(self.l[0]).isnumeric() else self.alphabetical()
+
 def info( l : list): i = INFO(l); i.processor()
 
 
@@ -209,6 +242,12 @@ def info( l : list): i = INFO(l); i.processor()
 
 
 '''
+
+
+locals()
+globals()
+dir() >>> name of all variables
+
 Color Scheme
 Monokai Markdown
 Oceanic Next Markdown
