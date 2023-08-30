@@ -1,10 +1,89 @@
-Total number of snippets >>> 87
+Total number of snippets >>> 119
 ************************************************************************
 1th Snippet -> Name a2n 
 a2n = {chr(k):v for k,v in zip(range(97,97+27),range(1,27))}
 
 ************************************************************************
-2th Snippet -> Name binarySearch 
+2th Snippet -> Name adjacencyList 
+class AdjacencyList:
+
+    class AdjNode:
+        def __init__(self, value):
+            self.vertex = value
+            self.next = None
+
+    def __init__(self, num):
+        self.V = num
+        self.graph = [None] * self.V
+        self.dick = defaultdict(list) # stores all the vertices
+
+    def add_edge(self, source, destination):
+        node = AdjacencyList.AdjNode(destination)
+        node.next = self.graph[source]
+        self.graph[source] = node 
+        # Vice - Versa
+        node = AdjacencyList.AdjNode(source)
+        node.next = self.graph[destination]
+        self.graph[destination] = node
+
+    def get_vertex(self): # does not work with typical iteration without indexing !!!
+        for i in range(self.V):
+            temp = self.graph[i]
+            while temp:
+                self.dick[i].append(temp.vertex)
+                temp = temp.next
+
+************************************************************************
+3th Snippet -> Name adjacencyMatrix 
+class AdjacencyMatrix:
+    def __init__(self, size):
+        self.adjMatrix = []
+        for i in range(size): self.adjMatrix.append([0 for i in range(size)])
+        self.size = size
+    def add_edge(self, v1, v2):
+        if v1==v2 : raise ValueError('Vertices should be distinct')
+        self.adjMatrix[v1][v2] += 1
+        self.adjMatrix[v2][v1] += 1
+    def remove_edge(self, v1, v2):
+        if self.adjMatrix[v1][v2] == 0: raise ValueError('No edge found')
+        self.adjMatrix[v1][v2] = 0
+        self.adjMatrix[v2][v1] = 0
+
+************************************************************************
+4th Snippet -> Name allDuplicatesInAString 
+def allDuplicatesInAString(s:str, length:int) -> list:
+	store = []
+	prev = s[0]
+	start,end, idx, couter = 0,0,1,1
+	while idx < length:
+		if s[idx] == prev: end = idx; couter+=1
+		else:
+			if couter >= 2: store.append((start, end)) # tuple
+			prev = s[idx]; start = idx; couter = 1
+		idx+=1
+	if end - start == length-1: store.append((0,length-1))
+	return store
+
+************************************************************************
+5th Snippet -> Name allIndex 
+all_index = lambda l,val : [idx for idx,i in enumerate(l) if i==val]
+
+************************************************************************
+6th Snippet -> Name bfs 
+visited = []
+queue = []
+def bfs(graph, node): 
+  visited.append(node)
+  queue.append(node)
+  while queue:          
+    m = queue.pop(0) 
+    for neighbour in graph[m]:
+      if neighbour not in visited:
+        visited.append(neighbour)
+        queue.append(neighbour)
+
+************************************************************************
+7th Snippet -> Name binarySearch 
 def binary_search_function(input_list:list, low_value:int, high_value:int,  target_value:int) -> None:
     if high_value >= low_value:
         middle = (high_value + low_value) // 2
@@ -14,18 +93,111 @@ def binary_search_function(input_list:list, low_value:int, high_value:int,  targ
     else: return [high_value,low_value]
 
 ************************************************************************
-3th Snippet -> Name bitGenerator 
+8th Snippet -> Name bitGenerator 
 def bitGen( n : int ) -> list[int] : return [''.join(i) for i in itertools.product('01', repeat=n)]
 
 ************************************************************************
-4th Snippet -> Name bitString 
+9th Snippet -> Name bitString 
 n = int(input())
 ans = 1
 for _ in range(n): ans *= 2; ans %= 1e9+7
 print(int(ans))
 
 ************************************************************************
-5th Snippet -> Name bubbleSort 
+10th Snippet -> Name bst 
+class BST:
+    # not collected !!!
+    class Node:
+        def __init__(self,val = None): self.val,self.left,self.right = val,None,None
+
+    def __init__(self,l):
+        self.l = l
+        self.root = BST.Node(self.l[0]) # it's always the same
+        self.iterator()
+        self.inorderStore = []
+        self.level_counter = 0 
+        self.level = defaultdict(list)
+        self.flag = False
+
+    def add_nodes(self,root,item):
+        if item > root.val:
+            if root.right : self.add_nodes(root.right,item)
+            else: root.right = BST.Node(item)
+        else:
+            if root.left: self.add_nodes(root.left,item)
+            else: root.left = BST.Node(item)
+
+    def iterator(self):
+        # start after the root
+        for i in self.l[1:]: self.add_nodes(self.root,i)
+
+    def insert(self,root,item):
+        if item > root.val:
+            if root.right : self.insert(root.right,item)
+            else: root.right = BST.Node(item)
+        else:
+            if root.left : self.insert(root.left,item)
+            else: root.left = BST.Node(item)
+
+    def right_most(self,root): # returns the rightmost element
+        if root.right: right_most(root.right)
+        return root # left_most(root) # no more right (greater value), and leftmost of the found root
+
+    def left_most(self, root): # returns the leftmodt element
+        if root.left: left_most(root.left)
+        return root
+
+    def delete(self,root, val):
+        if root is None: return root
+        if val < root.val: root.left = self.delete(root.left, val)
+        elif val > root.val: root.right = self.delete(root.right, val)
+        else:
+            if root.left is None: temp = root.right; root = None; return temp
+            elif root.right is None: temp = root.left; root = None; return temp
+            temp = self.left_most(root.right)
+            root.val = temp.val
+            root.right = self.delete(root.right, temp.val)
+        return root     
+
+    def inorder(self,root):
+        # In - Order >>> Left - Process - Right
+        if root:
+            self.inorder(root.left)
+            self.inorderStore.append(root.val)
+            self.inorder(root.right)
+        return self.inorderStore
+
+    def height(self, node):
+        if node is None: return 0
+        else:
+            # Compute the depth of each subtree
+            lDepth = self.height(node.left)
+            rDepth = self.height(node.right)
+            # Use the larger one
+            if lDepth > rDepth: return (lDepth + 1)
+            else: return (rDepth + 1)
+
+    def givenLevel(self, root, level):
+        if root is None: self.level[self.level_counter].append(None); return  
+        if level == 1: self.level[self.level_counter].append(root.val)
+        elif level > 1:
+            self.givenLevel(root.left, level - 1)
+            self.givenLevel(root.right, level - 1)
+
+    def sub_level(self,root):
+        h = self.height(root)
+        for i in range(1, h+1):
+            self.level_counter+=1
+            self.givenLevel(root, i)
+
+    def search(self,val, root):
+        if root.val == val: return True
+        elif root.val > val and root.left: return self.search(val,root.left)
+        elif root.val < val and root.right: return self.search(val,root.right)
+        return False
+
+************************************************************************
+11th Snippet -> Name bubbleSort 
 def bubble_sort(arr):
     i = 0
     while i < len(arr):
@@ -37,48 +209,111 @@ def bubble_sort(arr):
     return arr
 
 ************************************************************************
-6th Snippet -> Name coinPiles 
+12th Snippet -> Name clarifier 
+
+
+
+import os,sys,hq,math,itertools;from collections import deque,defaultdict,OrderedDict,Counter
+from bisect import bisect,bisect_left,bisect_right,insort
+from heapq import heapify,heappush,heappop,nsmallest,nlargest,heapreplace, heappushpop
+sys.stdin = open(F'{hq.input_file}','r')
+sys.stdout = open(F'{hq.output_file}', 'w')
+
+${1:val}
+
+
+
+************************************************************************
+13th Snippet -> Name coinPiles 
 '''Make A and B equal by removing 2 from A and 1 from B or vice versa'''
 def coin_pile_2_1( a : int , b : int ) -> bool :
     if ((a + b) % 3 == 0 and 2 * a >= b and 2 * b >= a ): return True
     else: return False
 
 ************************************************************************
-7th Snippet -> Name comment 
+14th Snippet -> Name comment 
 """
 ${1:Your Comment Here}
 """
 
 ************************************************************************
-8th Snippet -> Name currencyChange 
-def currencyChange(change:int)->list:
-    currency,n,ans,i = [1, 2, 5, 10, 20, 50, 100, 500, 1000],len(currency),[],n-1
-    while i >= 0:
-        while (change >= currency[i]): change -= currency[i]; ans.append(currency[i])
-        i -= 1
-    return ans
+15th Snippet -> Name consecutiveDifference 
+def consecutiveDifference( l : list ) -> list:
+    store = []
+    for idx, i in enumerate(l):
+        if idx > 0: store.append(i-l[idx-1])
+    return store
 
 ************************************************************************
-9th Snippet -> Name cycle 
-# listname, toBreakWhile, startingIndex, forward/reverse
-def cycle(list_name : list, breakpoint, startIndex : int = 0, direction : int = 1) -> (int, list) :
-    temp,tempStore = 0,[]
-    for idx,i in enumerate(itertools.cycle(list_name[::direction])):
-        if idx >= startIndex:
-            if i!=breakpoint: temp+=1; tempStore.append(i)
-            else: break
-    return temp, tempStore
+16th Snippet -> Name currencyChange 
+def currency_exchange(n,l) -> int:
+    i = len(l)-1
+    counter = 0
+    while True:
+        try:
+            if n >= l[i]:
+                if l[i]%n==0: counter+=n//l[i]; break
+                else: counter+=n//l[i]; n%=l[i]
+            i-=1
+        except IndexError: break
+    return counter
 
 ************************************************************************
-10th Snippet -> Name debugAppend 
+17th Snippet -> Name cycle 
+class CycleAdvanced: # tc O(N)
+	def __init__(self,l:list,start_idx:int=None,start_val:int=None)->None:
+		self.l = l
+		self.start_idx = start_idx # idx
+		self.start_val = start_val
+		self.length = len(self.l)
+		self.flag = False
+		self.idx = 0
+		self.counter = 0
+		self.store = []
+		self.predictor()
+	def reset (self) -> int: # resets the index after exceeding the max to 0
+	    if self.idx > self.length - 1: self.idx = 0
+	def shrink_idx(self):
+		for i in itertools.cycle(self.l):
+			if not self.flag:
+				if self.idx == self.start_idx: self.flag = True; self.todo(i) # take off flag
+			else:
+				self.reset() # only for idx
+				if self.idx == self.start_idx: break
+				else: self.todo(i) # pass the value to work with
+			self.idx+=1
+	def shrink_val(self):
+		for i in itertools.cycle(self.l):
+			if not self.flag:
+				if self.start_val == i: self.flag = True; self.todo(i); continue
+			if self.flag:
+				# no reset as it is not enumerated ith idx
+				if i == self.start_val: break
+				else: self.todo(i)
+	def predictor(self): self.shrink_val() if self.start_val != None else self.shrink_idx()
+	def todo(self,element):
+		${1:todo}
+
+************************************************************************
+18th Snippet -> Name debugAppend 
 import baba_yaga; baba_yaga.debug('a',${1:data})
 
 ************************************************************************
-11th Snippet -> Name debugWrite 
+19th Snippet -> Name debugWrite 
 import baba_yaga; baba_yaga.debug('w',${1:data})
 
 ************************************************************************
-12th Snippet -> Name diagonalDifference 
+20th Snippet -> Name dfs 
+visited = set() # Set to keep track of visited nodes.
+walker = [] # sequential visit
+def dfs(dick, node): # node is the starting point in dict
+    if node not in visited:
+        walker.append(node)
+        visited.add(node)
+        for neighbour in dick[node]: dfs(dick, neighbour)
+
+************************************************************************
+21th Snippet -> Name diagonalDifference 
 def diagonalDifference( arr : list ) -> int:
     mat = len(arr[0]) 
     left_sum = 0
@@ -91,13 +326,13 @@ def diagonalDifference( arr : list ) -> int:
     return abs(right_sum - left_sum)
 
 ************************************************************************
-13th Snippet -> Name dictionary 
+22th Snippet -> Name dictionary 
 for item in ${1:arrayName}:
 	${2:dick}.setdefault(item,0)
 	${2:dick}[item]+=1 
 
 ************************************************************************
-14th Snippet -> Name DublyLinkedList - Copy 
+23th Snippet -> Name DublyLinkedList - Copy 
 class DoublyLinkedList:
     def __init__(self):self.head = None
     def insertAtBeginning(self, new_data):
@@ -143,7 +378,7 @@ class DoublyLinkedList:
         return backward
 
 ************************************************************************
-15th Snippet -> Name easeOverLapIntervals 
+24th Snippet -> Name easeOverLapIntervals 
 def eraseOverlapIntervals(intervals:list) -> int:
     end, cnt = float('-inf'), 0
     for s, e in sorted(intervals, key=lambda x: x[1]):
@@ -152,14 +387,14 @@ def eraseOverlapIntervals(intervals:list) -> int:
     return cnt
 
 ************************************************************************
-16th Snippet -> Name factorial 
+25th Snippet -> Name factorial 
 def factorial(n,m = 1000000007):
     q = 1
     for i in range(n): q = (q * (i + 1)) % m
     return(q)
 
 ************************************************************************
-17th Snippet -> Name factors 
+26th Snippet -> Name factors 
 def factors(n:int) -> list:
     q = []
     for i in range(1,int(n ** 0.5) + 1):
@@ -167,7 +402,17 @@ def factors(n:int) -> list:
     return list(sorted(list(set(q))))
 
 ************************************************************************
-18th Snippet -> Name fastIO 
+27th Snippet -> Name fastInput 
+import io,os
+input = io.BytesIO(os.read(0, os.fstat(0).st_size)).readline
+
+************************************************************************
+28th Snippet -> Name fastInputSys 
+import sys
+input = sys.stdin.readline
+
+************************************************************************
+29th Snippet -> Name fastIO 
 from __future__ import division, print_function
 
 import os
@@ -246,7 +491,7 @@ else:
 input = lambda: sys.stdin.readline().rstrip("\r\n")
 
 ************************************************************************
-19th Snippet -> Name findMinimumDifference 
+30th Snippet -> Name findMinimumDifference 
 def findMinDiff(arr:list, n:int) -> int:
     arr,diff = sorted(arr),10**20
     for i in range(n-1):
@@ -254,7 +499,7 @@ def findMinDiff(arr:list, n:int) -> int:
     return diff
 
 ************************************************************************
-20th Snippet -> Name findMinimumSum 
+31th Snippet -> Name findMinimumSum 
 def findMin(arr:list) -> int:
     n,summation = len(arr),0
     for i in range(0, n): summation = summation + arr[i]
@@ -273,23 +518,23 @@ def findMin(arr:list) -> int:
     return summation - maximim
 
 ************************************************************************
-21th Snippet -> Name finishBefore 
+32th Snippet -> Name finishBefore 
 finishBefore = lambda list_name, target : list(itertools.takewhile(lambda x : x != target, list_name))
 
 ************************************************************************
-22th Snippet -> Name for++ 
+33th Snippet -> Name for++ 
 for ${1:referenceValue} in ${2:arrayName}:
     ${3:Query}
 
 ************************************************************************
-23th Snippet -> Name gcd_lcm 
+34th Snippet -> Name gcd_lcm 
 def gcd(a:int,b:int) -> int: # Also known as Eucledian Algorithm
 	if b == 0: return a
 	else : return gcd(b, a % b)
 lcm = lambda a,b : (a*b)/gcd(a,b)
 
 ************************************************************************
-24th Snippet -> Name graph 
+35th Snippet -> Name graph 
 
 class Graph:
     def __init__(self, gdict = None):
@@ -317,11 +562,35 @@ class Graph:
                 self.dfs(visited, graph_elements, neighbour)
 
 ************************************************************************
-25th Snippet -> Name inf 
+36th Snippet -> Name inf 
 float('-inf')
 
 ************************************************************************
-26th Snippet -> Name isConsecutive 
+37th Snippet -> Name inorder 
+inorderStore = []
+def inorder(root):
+    # In - Order >>> Left - Process - Right >>> sorted() for BST
+    if root: inorder(root.left); inorderStore.append(root.val); inorder(root.right)
+    return inorderStore
+
+************************************************************************
+38th Snippet -> Name inverseSeive 
+# make a list of composite numbers other than the primes
+def inverse_sieve(s:list) -> list:
+    com = []
+    idx = 0
+    leng = len(s)
+    while idx < leng-1:
+    	if s[idx+1]!=s[idx]+1:
+    		# append s[idx] >>> s[idx+1]
+    		start = s[idx]+1
+    		end = s[idx+1]
+    		for _ in range(start,end): com.append(_)
+    	idx+=1
+    return com
+
+************************************************************************
+39th Snippet -> Name isConsecutive 
 def isConsecutive(l:list) -> bool:
     flag = True
     temp = l[0]
@@ -332,14 +601,14 @@ def isConsecutive(l:list) -> bool:
     return flag
 
 ************************************************************************
-27th Snippet -> Name isCube 
+40th Snippet -> Name isCube 
 def isCube(number : int) -> bool:
     cube_root = number**(1./3.)
     if round(cube_root) ** 3 == number: return True
     else: return False
 
 ************************************************************************
-28th Snippet -> Name isDecreasing 
+41th Snippet -> Name isDecreasing 
 def isDecreasing(l:list) -> bool:
     start = l[0]
     culprit = None
@@ -352,11 +621,11 @@ def isDecreasing(l:list) -> bool:
 
 
 ************************************************************************
-29th Snippet -> Name isfloat 
+42th Snippet -> Name isfloat 
 isfloat = lambda num : isinstance(num, float)
 
 ************************************************************************
-30th Snippet -> Name isIncreasing 
+43th Snippet -> Name isIncreasing 
 def isIncreasing(l:list) -> bool:
     start = l[0]
     culprit = None
@@ -368,15 +637,15 @@ def isIncreasing(l:list) -> bool:
     return temp
 
 ************************************************************************
-31th Snippet -> Name isint 
+44th Snippet -> Name isint 
 isint = lambda num : isinstance(num, int)
 
 ************************************************************************
-32th Snippet -> Name isPowerOfTwo 
+45th Snippet -> Name isPowerOfTwo 
 isPowerOfTwo = lambda num : num and (not(num & (num - 1)))
 
 ************************************************************************
-33th Snippet -> Name isPrime 
+46th Snippet -> Name isPrime 
 def isPrime( n : int ) -> bool:
     if n <= 1: return False
     if n % 2 == 0: return n == 2
@@ -386,14 +655,14 @@ def isPrime( n : int ) -> bool:
     return True
 
 ************************************************************************
-34th Snippet -> Name isSquare 
+47th Snippet -> Name isSquare 
 def isSquare(number : int) -> bool:
     root = math.sqrt(number)
     if int(root + 0.5) ** 2 == number: return True
     else: return False
 
 ************************************************************************
-35th Snippet -> Name isSubsequence 
+48th Snippet -> Name isSubsequence 
 def isSubsequence(needle:str, haystack:str) -> bool:
     current_pos = 0
     for c in needle:
@@ -402,7 +671,7 @@ def isSubsequence(needle:str, haystack:str) -> bool:
     return True
 
 ************************************************************************
-36th Snippet -> Name jobSchedulingNoProfit 
+49th Snippet -> Name jobSchedulingNoProfit 
 def jobSchedulingNoProfit(arr:list)->list:
     n,result,maxHeap = len(arr),[],[]
     arr.sort(key=lambda x: x[1])
@@ -418,7 +687,7 @@ def jobSchedulingNoProfit(arr:list)->list:
     return result
 
 ************************************************************************
-37th Snippet -> Name jobSchedulingWithProfit 
+50th Snippet -> Name jobSchedulingWithProfit 
     # print result's first element as the jobs name
 def jobSchedulingWithProfit(startTime:list, endTime:list, profit:list)->int:
     jobs = sorted(zip(startTime, endTime, profit), key=lambda v: v[1])
@@ -429,12 +698,12 @@ def jobSchedulingWithProfit(startTime:list, endTime:list, profit:list)->int:
     return dp[-1][1]
 
 ************************************************************************
-38th Snippet -> Name L 
+51th Snippet -> Name L 
 try: L(${1:logValue})
 except: pass
 
 ************************************************************************
-39th Snippet -> Name largestSubarray 
+52th Snippet -> Name largestSubarray 
 def largest_subarray(a,n):
     tmp_list = []
     max = 0
@@ -447,14 +716,40 @@ def largest_subarray(a,n):
     print (tmp_list)
 
 ************************************************************************
-40th Snippet -> Name lcmOfArray 
+53th Snippet -> Name lcmOfArray 
 def LCMofArray(a:list) -> int:
     lcm = a[0]
     for i in range(1,len(a)): lcm = lcm*a[i]//math.gcd(lcm, a[i])
     return lcm
 
 ************************************************************************
-41th Snippet -> Name longestPalindrome 
+54th Snippet -> Name listToBinaryTree 
+def insertLevelOrder(arr, i, n):
+    root = None
+    if i < n:
+        root = Node(arr[i])
+        # first add all left the all right
+        root.left = insertLevelOrder(arr, 2 * i + 1, n)
+        root.right = insertLevelOrder(arr, 2 * i + 2, n)
+    return root
+
+************************************************************************
+55th Snippet -> Name longestCommonPrefix 
+def longestCommonPrefix(strs:str) -> str:
+    strs.sort(key=len, reverse=True)
+    length = len(strs)
+    common = strs[0]
+    for idx,sub in enumerate(strs[::-1]):
+        if idx==length-1: break
+        else:
+            temp = -1
+            for sub_sub, c in itertools.zip_longest(sub,common):
+                if sub_sub==c: temp+=1
+                else: common = common[0:temp+1]
+    return common
+
+************************************************************************
+56th Snippet -> Name longestPalindrome 
 def longestPalindrome(s:list) -> list:
     dp = [[False for i in range(len(s))] for i in range(len(s))]
     for i in range(len(s)): dp[i][i] = True
@@ -476,7 +771,37 @@ def longestPalindrome(s:list) -> list:
     return s[start:start+max_length]
 
 ************************************************************************
-42th Snippet -> Name makeTwoBinaryEqual 
+57th Snippet -> Name longestUniqueSubstring 
+def longestUniqueSubstring(s:str) -> int :
+    seen = {}
+    l = 0
+    length = 0
+    for r in range(len(s)):
+        char = s[r]
+        if char in seen and seen[char] >= l: l = seen[char] + 1
+        else: length = max(length, r - l + 1)
+        seen[char] = r
+    return length
+
+************************************************************************
+58th Snippet -> Name longTypedString 
+def longTypedString( array:list ) -> list:
+	strings, store = [], []
+	prev = array[0]
+	c = 1
+	for idx,i in enumerate(array):
+		if idx > 0:
+			if i==prev: c+=1
+			else: strings.append(prev);	store.append(c); prev = i; c = 1
+	strings.append(prev); store.append(c)
+	return store, strings
+
+************************************************************************
+59th Snippet -> Name LT 
+LT(tc,${1:testcase},${2:logVal})
+
+************************************************************************
+60th Snippet -> Name makeTwoBinaryEqual 
 def makeTwoBinaryEqual(list1: list, list2: list) -> None:
     absolute,list1Length,list2Length = abs(len(list1) - len(list2)),len(list1),len(list2)
     if list1Length > list2Length :
@@ -485,7 +810,7 @@ def makeTwoBinaryEqual(list1: list, list2: list) -> None:
         for i in range(absolute) : list1.insert(0,'0')
 
 ************************************************************************
-43th Snippet -> Name maxIncreasingSubarray 
+61th Snippet -> Name maxIncreasingSubarray 
 def maxIncreasingSubArray(arr : list) -> int:
     c,temp = 1,[]
     if len(arr)==1: return 1
@@ -499,7 +824,18 @@ def maxIncreasingSubArray(arr : list) -> int:
         return max(temp)
 
 ************************************************************************
-44th Snippet -> Name maxSubarraySum 
+62th Snippet -> Name maxMin 
+def max_min(l) -> (list,list):
+    # idx, val
+    high = [None,float('-inf')]
+    low = [None,float('inf')]
+    for idx,i in enumerate(l):
+        if i > high[1]: high[1] = i; high[0]=idx
+        if i < low[1]: low[1] = i; low[0]=idx
+    return high,low
+
+************************************************************************
+63th Snippet -> Name maxSubarraySum 
 def maxSubarraySum(n:int, array:list) -> int:
     best = s = 0
     for k in range(n):
@@ -509,13 +845,13 @@ def maxSubarraySum(n:int, array:list) -> int:
     return best
 
 ************************************************************************
-45th Snippet -> Name minDifferenceOfTwoArray 
+64th Snippet -> Name minDifferenceOfTwoArray 
 def min_difference_two_subsets(index : int = 0, a : int = 0, b : int  = 0, weights : list) -> int:
     if index >= len(weights): return abs(a - b)
     return min(min_difference(index + 1, a + weights[index], b), min_difference(index + 1, a, b + weights[index])) : int
 
 ************************************************************************
-46th Snippet -> Name minimumDifference 
+65th Snippet -> Name minimumDifference 
 def findMinDiff(arr, n):
     arr = sorted(arr)
     diff = 10**20
@@ -524,7 +860,7 @@ def findMinDiff(arr, n):
     return diff
 
 ************************************************************************
-47th Snippet -> Name minimumSum 
+66th Snippet -> Name minimumSum 
 # Function to return the minimum sum
 def findMin(arr):
     n = len(arr)
@@ -545,22 +881,32 @@ def findMin(arr):
     return sum - max
 
 ************************************************************************
-48th Snippet -> Name n2a 
+67th Snippet -> Name mod 
+def mod(b, p, m) -> int:
+    if p == 0: return 1
+    elif p == 1: return b % m
+    else:
+        result = mod(b, p//2, m)
+        if p % 2: return result * result * b % m
+        else: return result * result % m
+
+************************************************************************
+68th Snippet -> Name n2a 
 n2a = {v:chr(k) for k,v in zip(range(97,97+27),range(1,27))}
 
 ************************************************************************
-49th Snippet -> Name nCr 
+69th Snippet -> Name nCr 
 def ncr(n:int,r:int) -> int:
     if r > n: return(0)
     else: return(math.factorial(n) // (math.factorial(n - r) * math.factorial(r)))
 
 ************************************************************************
-50th Snippet -> Name Node 
+70th Snippet -> Name Node 
 class Node:
-    def __init__(self,data = None): self.data,self.next,self.prev=data,None,None
+    def __init__(self,val = None): self.val,self.next,self.prev=val,None,None
 
 ************************************************************************
-51th Snippet -> Name noOfSubarraysOfSumK 
+71th Snippet -> Name noOfSubarraysOfSumK 
 def no_of_subarrays_of_sum_k (nums: list, k: int) -> int:
     ans , prefsum, d = 0,  0, {0:1}
     for num in nums:
@@ -570,13 +916,13 @@ def no_of_subarrays_of_sum_k (nums: list, k: int) -> int:
     return ans
 
 ************************************************************************
-52th Snippet -> Name nPr 
+72th Snippet -> Name nPr 
 def npr(n:int,r:int) -> int:
     if r > n: return(0)
     else: return(math.factorial(n) // math.factorial(n - r))
 
 ************************************************************************
-53th Snippet -> Name nsu 
+73th Snippet -> Name nsu 
 ii  = lambda : int(input())                           
 si  = lambda : input()                               
 mi  = lambda : map(int,input().strip().split(" "))   
@@ -587,7 +933,7 @@ lsi = lambda : list(msi())
 ${1:main}
 
 ************************************************************************
-54th Snippet -> Name nthNumber 
+74th Snippet -> Name nthNumber 
 '''Kth number when stacked together'''
 def kth_number( k : int ) -> str :
     length = first = 1
@@ -599,7 +945,7 @@ def kth_number( k : int ) -> str :
     return str(first + q)[r]
 
 ************************************************************************
-55th Snippet -> Name numberLineJump 
+75th Snippet -> Name numberLineJump 
 def number_line_jump(first_begin:int, first_hop:int, second_begin:int, second_hop:int) -> str:
     if first_begin < second_begin and first_hop < second_hop: return 'NO'
     else:
@@ -607,7 +953,13 @@ def number_line_jump(first_begin:int, first_hop:int, second_begin:int, second_ho
         else: return 'NO'
 
 ************************************************************************
-56th Snippet -> Name optimizer 
+76th Snippet -> Name online 
+for _ in range(ii()):
+${1:	length = ii()
+	s = si()}
+
+************************************************************************
+77th Snippet -> Name optimizer 
 def optimizer(f):
     memory = {}
     def wrapper(args):
@@ -616,15 +968,38 @@ def optimizer(f):
     return wrapper
 
 ************************************************************************
-57th Snippet -> Name orderLowercase 
+78th Snippet -> Name orderedSet 
+def orderedSet(l:list) -> list:
+    dick = defaultdict(int)
+    store = []
+    for i in l:
+        if not dick[i]: dick[i] = 1; store.append(i)
+    return store
+
+************************************************************************
+79th Snippet -> Name orderLowercase 
 orderLowercase = lambda character : ord(character)-97
 
 ************************************************************************
-58th Snippet -> Name orderUppercase 
+80th Snippet -> Name orderUppercase 
 orderUppercase = lambda character : ord(character)-65
 
 ************************************************************************
-59th Snippet -> Name pascalsTriangle 
+81th Snippet -> Name parity 
+def parity(l:list):
+    flag = False
+    length = len(l)
+    if length > 1:
+        start = l[0]%2
+        for idx,i in enumerate(l):
+            if idx > 0:
+                if i%2!=start: flag = True; break
+        if not flag: return True
+        else: return False
+    else: return True
+
+************************************************************************
+82th Snippet -> Name pascalsTriangle 
 def pascals_triangle(n:int)-> list:
     triangle = []
     for i in range(n):
@@ -634,11 +1009,19 @@ def pascals_triangle(n:int)-> list:
     return triangle
 
 ************************************************************************
-60th Snippet -> Name powerOfTwo 
+83th Snippet -> Name postorder 
+postorderStore = []
+def postorder(root):
+    # Post - Order >>> Left - Right - Process
+    if root: postorder(root.left); postorder(root.right); postorderStore.append(root.val)
+    return postorderStore
+
+************************************************************************
+84th Snippet -> Name powerOfTwo 
 def power_two(x:int) -> int: return (x and (not(x & (x - 1))))
 
 ************************************************************************
-61th Snippet -> Name powerSet 
+85th Snippet -> Name powerSet 
 def powerset(some_list:list)->list:
     if len(some_list) == 0: return [[]]
     subsets = []
@@ -650,7 +1033,7 @@ def powerset(some_list:list)->list:
     return subsets
 
 ************************************************************************
-62th Snippet -> Name prefixSum 
+86th Snippet -> Name prefixSum 
 def prefixSum(arr:list) -> list:
     newArray,idx = [],0
     while idx < len(arr):
@@ -660,7 +1043,15 @@ def prefixSum(arr:list) -> list:
     return newArray
 
 ************************************************************************
-63th Snippet -> Name primeFactors 
+87th Snippet -> Name preorder 
+preorderStore = []
+def preorder(root):
+    # Pre - Order >>> Process - Left - Right
+    if root: preorderStore.append(root.val); preorder(root.left); preorder(root.right)
+    return preorderStore
+
+************************************************************************
+88th Snippet -> Name primeFactors 
 def prime_factors(n:int) -> list:
     q = []
     while n % 2 == 0: q.append(2); n = n // 2
@@ -670,15 +1061,20 @@ def prime_factors(n:int) -> list:
     return list(sorted(q))
 
 ************************************************************************
-64th Snippet -> Name print 
+89th Snippet -> Name print 
 print(f"{${1:value}}",end="\n")
 
 ************************************************************************
-65th Snippet -> Name project 
+90th Snippet -> Name printArray 
+print(*${1:array_name})
+
+************************************************************************
+91th Snippet -> Name project 
 import pyperclip, time
 import json,datetime
 from datetime import date
 from send2trash import send2trash
+from tqdm import tqdm # tqdm(range(num))
 import os, webbrowser, pyautogui, shutil, colorama
 from tkinter import *
 from prettytable import PrettyTable
@@ -690,6 +1086,7 @@ from ping3 import ping, verbose_ping # ping("address")
 
 #os.system('mode con: cols=80 lines=50')
 nl = lambda lines : print(lines*"\n", end="")
+# alt + 219
 
 RED =  F"{Fore.RED}"
 GREEN =  F"{Fore.GREEN}"
@@ -713,14 +1110,27 @@ def main() -> None:
 if __name__ == "__main__":	main()
 
 ************************************************************************
-66th Snippet -> Name repeatedSubstringPattern 
+92th Snippet -> Name repeatedSubstringPattern 
 def repeatedSubstringPattern(s: str) -> bool:
     for i in range(1,int(len(s)/2)+1):
         if set(s.split(s[0:i])) == {''}: return True 
     return False
 
 ************************************************************************
-67th Snippet -> Name schedule 
+93th Snippet -> Name reset 
+def reset (length,index) -> int:
+    if index > length - 1: index = 0
+    return index
+
+************************************************************************
+94th Snippet -> Name rIndex 
+def rindex(l,length,val):
+    for idx,i in enumerate(l[::-1]):
+        if i==val: return length-idx-1
+    return None # for ValueError
+
+************************************************************************
+95th Snippet -> Name schedule 
 def eraseOverlapIntervals(intervals):
     end, cnt = float('-inf'), 0
     for s, e in sorted(intervals, key=lambda x: x[1]):
@@ -729,7 +1139,7 @@ def eraseOverlapIntervals(intervals):
     return cnt
 
 ************************************************************************
-68th Snippet -> Name sieveOfErathroses 
+96th Snippet -> Name sieveOfErathroses 
 def seive(n : int) -> list:
     allprime,prime,p = [1],[True for i in range(n + 1)],2
     while (p * p <= n): 
@@ -741,37 +1151,84 @@ def seive(n : int) -> list:
     return allprime
 
 ************************************************************************
-69th Snippet -> Name SinglyLinkedList 
+97th Snippet -> Name SinglyLinkedList 
 class SinglyLinkedList:
     def __init__(self): self.head = None
     def listPrint(self):
+        store = []
         printval = self.head
-        while printval is not None:print(f"{printval.data}",end="\n");printval = printval.next
-    def insertAtBeginning(self, newData): NewNode=Node(newData);NewNode.next=self.head;self.head=NewNode
+        while printval is not None : store.append(printval.data) ; printval = printval.next
+        return store
+    def insertAtBeginning(self, newData): NewNode = Node(newData) ; NewNode.next = self.head; self.head = NewNode
     def insertAtLast(self, newData):
         NewNode = Node(newData)
-        if self.head is None: self.head=NewNode;return
-        last = self.head
-    def Inbetween(self,middle_node,newdata):
-        if middle_node is None:print("The mentioned node is absent");return
+        temp = self.head
+        while True:
+            if temp.next == None: temp.next = NewNode; break
+            else: temp = temp.next
+    def insertAfter(self,middle_node,newdata):
         NewNode = Node(newdata)
-        NewNode.nextval = middle_node.nextval
-        middle_node.nextval = NewNode
+        temp = self.head
+        while True:
+            if temp.data == middle_node:
+                test = temp.next
+                temp.next = NewNode
+                NewNode.next = test
+                break
+            else: temp = temp.next
+    def search(self, value):
+        idx = 0
+        temp = self.head
+        flag = False
+        while True:
+            try:
+                if temp.data == value: flag = True; break
+                else: temp =temp.next
+                idx+=1
+            except AttributeError: break
+        return idx if flag else -1
+    def insertBefore(self,middle_node,newdata):
+        NewNode = Node(newdata)
+        temp = self.head
+        while True:
+            if temp.next.data == middle_node:
+                test = temp.next
+                temp.next = NewNode
+                NewNode.next = test
+                break
+            else: temp = temp.next
 
 ************************************************************************
-70th Snippet -> Name sortByDictionaryValues 
+98th Snippet -> Name sortByDictionaryValues 
 sortByValues = lambda dick : {k: v for k, v in sorted(dick.items(), key=lambda item: item[1])}
 
 ************************************************************************
-71th Snippet -> Name sortByReversedValues 
+99th Snippet -> Name sortByReversedValues 
 sortByValuesReversed = lambda dick : {k: v for k, v in sorted(dick.items(), key=lambda item: item[1], reverse=True)}
 
 ************************************************************************
-72th Snippet -> Name startFrom 
+100th Snippet -> Name stack 
+class Stack:
+    def __init__(self, MAX : int):
+        self.items = []
+        self.MAX = MAX + 1
+        self.appended = 0
+    def push(self, item):
+        if self.appended + 1 <= self.MAX : self.items.append(item); self.appended+=1
+        assert self.appended + 1 <= self.MAX, 'MAX reached'
+    def pop(self):
+        if self.appended - 1 >= 0 : self.pop(); self.appended-=1
+        assert self.appended - 1 >= 0, 'already empty'
+    def isEmpty(self): return True if len(self.items) == 0 else False
+    def isMAX(self): return True if self.appended + 1 == self.MAX else False 
+    def getItems(self): return self.items
+
+************************************************************************
+101th Snippet -> Name startFrom 
 startFrom = lambda list_name, target : list(itertools.dropwhile(lambda x : x != target, list_name))
 
 ************************************************************************
-73th Snippet -> Name stringPatternSearching 
+102th Snippet -> Name stringPatternSearching 
 def string_pattern_searching(haystack:str, needle:str) -> int:
     """Knuth-Morris-Prat Algorithm"""
     s : str = needle + "#" + haystack
@@ -790,7 +1247,7 @@ def string_pattern_searching(haystack:str, needle:str) -> int:
     # for the no of matches return the ans
 
 ************************************************************************
-74th Snippet -> Name subarraySumEqualToK 
+103th Snippet -> Name subarraySumEqualToK 
 def subarray_sum_equal_to_k ( a : list , K : int ) -> int :
     n = len(a)
     hash = defaultdict(lambda: 0)
@@ -804,41 +1261,46 @@ def subarray_sum_equal_to_k ( a : list , K : int ) -> int :
     return count
 
 ************************************************************************
-75th Snippet -> Name templateBlank 
-# BOOGEYMAN >>> Version 12.0
-def BoogeyMan() -> None:
-    '''
-    ${1:Query}
-    '''
-    ${2:Query}
-            
-if __name__ == "__main__":
-    import os, sys, math, itertools, bisect
-    from collections import deque, defaultdict, OrderedDict, Counter
-    from functools import cache, lru_cache # @lru_cache(maxsize=100)
-    ii,si = lambda : int(input()), lambda : input()               
-    mi, msi  = lambda : map(int,input().strip().split(" ")), lambda : map(str,input().strip().split(" ")) 
-    li, lsi = lambda : list(mi()), lambda : list(msi())
-    try:
-        from baba_yaga import cmdIO, _generator_, logging, log as L
-        class _BoogeyMan_:
-            def __init__(self) -> None: self.launchers = [cmdIO(), BoogeyMan(), _generator_()]
-            def init(self) -> None:
-                for _ in self.launchers: yield _ ; assert not _ , "EOF" 
-            def container(fun) :
-                def wrapper(): print(f"AC",end="\n"); fun()
-                return wrapper
-        @_BoogeyMan_.container
-        def launcher() : _BoogeyMan_().init()
-        launcher()
-    except (FileNotFoundError,ModuleNotFoundError): BoogeyMan()
+104th Snippet -> Name sumOfDigits 
+def sum_of_digits(num:int) -> int:
+    counter = 0
+    while num > 10: counter+=num%10; num//=10
+    return counter
 
 ************************************************************************
-76th Snippet -> Name ternary 
+105th Snippet -> Name super 
+def super(length:int): # returns random index between 1 -> length-1
+    import random
+    ll = [i for i in range(length)]
+    random.shuffle(ll)
+    for i in ll: yield i
+
+************************************************************************
+106th Snippet -> Name templateBlank 
+# Version 17.0
+def main() -> None:
+    ${1:Query}
+            
+if __name__ == "__main__":
+    master_flag = False
+    L = lambda string: exec('from hq import L\nL(string)') if not master_flag else False
+    LT = lambda tc, custom, string: exec('from hq import LT\nLT(tc, custom, string)') if not master_flag else False
+    import os,sys,math,itertools;from collections import deque,defaultdict,OrderedDict,Counter
+    from bisect import bisect,bisect_left,bisect_right,insort
+    from heapq import heapify,heappush,heappop,nsmallest,nlargest,heapreplace, heappushpop
+    ii,si=lambda:int(input()),lambda:input()               
+    mi,msi=lambda:map(int,input().strip().split(" ")),lambda:map(str,input().strip().split(" ")) 
+    li,lsi=lambda:list(mi()),lambda:list(msi())
+    out,export,p,pp=[],lambda:print('\n'.join(map(str, out)), end=''),lambda x :out.append(x),lambda array:p(' '.join(map(str,array)))
+    try:exec('from hq import see,info,cmdIO,_generator_\nline=[cmdIO(),main(),export(),_generator_()]\nfor l in line:l')
+    except(FileNotFoundError,ModuleNotFoundError):master_flag=True;main();export()
+
+************************************************************************
+107th Snippet -> Name ternary 
 print("YES") if ${2:condition} else print("NO")
 
 ************************************************************************
-77th Snippet -> Name timer 
+108th Snippet -> Name timer 
 import time
 start = time.time()
 ${1:Code}
@@ -846,11 +1308,11 @@ end = time.time() - start()
 print(f"{end-start}",end="\n")
 
 ************************************************************************
-78th Snippet -> Name toBinary 
+109th Snippet -> Name toBinary 
 toBinary = lambda num : int(str(bin(num))[2:])
 
 ************************************************************************
-79th Snippet -> Name towerOfHanoi 
+110th Snippet -> Name towerOfHanoi 
 def tower_of_hanoi(n:int, from_rod:int, to_rod:int, aux_rod:int):
     if n==1:
         print(f"{from_rod} {to_rod}",end="\n")
@@ -862,7 +1324,7 @@ def tower_of_hanoi(n:int, from_rod:int, to_rod:int, aux_rod:int):
     #tower_of_hanoi(n,1,3,2)
 
 ************************************************************************
-80th Snippet -> Name trailingZeroes 
+111th Snippet -> Name trailingZeroes 
 def trailing_zeroes(n:int) -> int:
     # divide the number with the powers of 5
     i = 5
@@ -873,7 +1335,20 @@ def trailing_zeroes(n:int) -> int:
     return int(no_of_zeroes)
 
 ************************************************************************
-81th Snippet -> Name treeTraversal 
+112th Snippet -> Name transpose 
+def transpose ( grid : list ) -> list:
+    cols = []
+    for idx, i in enumerate(grid):
+        if idx==0: # append the first row as column when it's empty
+            temp = idx
+            while temp < length: cols.append([i[temp]]); temp += 1
+        else:
+            temp = 0
+            while temp < length: cols[temp].append(i[temp]); temp += 1
+    return cols
+
+************************************************************************
+113th Snippet -> Name treeTraversal 
 # Works for binary tree also
 class Node:
     def __init__(self, item):
@@ -902,11 +1377,11 @@ def flushNodeStores() -> None:
     postorderStore.clear()
 
 ************************************************************************
-82th Snippet -> Name trueFalse 
+114th Snippet -> Name trueFalse 
 print('FTARLUSEE'[${1:condition}::2])
 
 ************************************************************************
-83th Snippet -> Name twoKnightsAttackEachOther 
+115th Snippet -> Name twoKnightsAttackEachOther 
 for i in range ( 1 , k+1 ) :
     ans = 0
     ans += 4 * (i ** 2 - 3)
@@ -917,7 +1392,7 @@ for i in range ( 1 , k+1 ) :
     print(ans // 2)
 
 ************************************************************************
-84th Snippet -> Name twoSetsEqualSum 
+116th Snippet -> Name twoSetsEqualSum 
 n = int(input())
 s = (n * (n + 1)) // 2
 if s % 2 == 0:
@@ -940,15 +1415,15 @@ if s % 2 == 0:
 else: print("NO")
 
 ************************************************************************
-85th Snippet -> Name vowels 
+117th Snippet -> Name vowels 
 vowels = ['a','e','i','o','u']
 
 ************************************************************************
-86th Snippet -> Name whileLoop 
+118th Snippet -> Name whileLoop 
 idx = 0
 while ${1:condition}:
 	idx+=1
 
 ************************************************************************
-87th Snippet -> Name yesNo 
+119th Snippet -> Name yesNo 
 print('YNEOS'[${1:condition}::2])

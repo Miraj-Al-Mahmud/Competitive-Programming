@@ -1,55 +1,60 @@
-# Version 16.0
+# Version 17.0
 def main() -> None:
-    # 2023-07-29 15:00:30
-    # https://codeforces.com/contest/1845/problem/C
+    # 2023-08-26 00:28:15
+    l = deque()
     for tc in range(ii()):
-        s = si()
-        dick = defaultdict(list)
-        for idx,i in enumerate(s): dick[i].append(idx)
-        length = ii()
-        start = ii()
-        stop = ii()
-        store = [i for i in range(start, stop+1)]
-        flag = False
+        
+        s = lsi()
+        a=s[0]
+        b = ''
+        if len(s)==2: b = s[1] 
 
-        prev = float('-inf')
+        direction = 1 # using instead of reverse, TLE
 
-        for s in store:
-            # every number of multiple digits
-            # break it down to the digits
-            if not flag:
-                prev = float('-inf')
-                for digit in str(s):
-                    # 1 2 3 
-                    # if matched then break
-                    # else continue
-                    if dick[digit]:
-                        # check the indexes to increasing order
-                        for it,idx in enumerate(dick[digit]):
-                            if idx < prev: flag = True; break
-                            else:
-                                # mark the index , continue
-                                if idx==-1: continue
-                                else:
-                                    dick[digit][it]=-1
-                    else: flag = True; break
+        if a=='back':
+            try:
+                if direction == 1:
+                    p(l[-1])
+                    l.pop()
+                else:
+                    p(l[0])
+                    l.popleft()
+            except:
+                p('No job for Ada?')
+        elif a=='front':
+            try:
+                if direction == 1:
+                    p(l[0])
+                    l.popleft()
+                else:
+                    p(l[-1])
+                    l.pop()
+            except:
+                p('No job for Ada?')
+        elif a=='reverse':
+            direction = direction * -1
+        elif a=='push_back':
+            if direction==1:
+                l.append(b)
             else:
-                break
+                l.appendleft(b)
+        elif a=='toFront':
+            if direction==1: l.appendleft(b)
+            else: l.append(b)
 
-        if not flag: p('YES')
-        else: p('NO')
-
-
+        L(l)
 
             
 if __name__ == "__main__":
-    #import os,sys,math,itertools;from collections import deque,defaultdict,OrderedDict,Counter
-    from collections import defaultdict
-    #from bisect import bisect,bisect_left,bisect_right,insort
-    #from heapq import heapify,heappush,heappop,nsmallest,nlargest,heapreplace, heappushpop
+    master_flag = False
+    L = lambda string: exec('from hq import L\nL(string)') if not master_flag else False
+    LT = lambda tc, custom, string: exec('from hq import LT\nLT(tc, custom, string)') if not master_flag else False
+    import os,sys,math,itertools;from collections import deque,defaultdict,OrderedDict,Counter
+    from bisect import bisect,bisect_left,bisect_right,insort
+    from heapq import heapify,heappush,heappop,nsmallest,nlargest,heapreplace, heappushpop
     ii,si=lambda:int(input()),lambda:input()               
     mi,msi=lambda:map(int,input().strip().split(" ")),lambda:map(str,input().strip().split(" ")) 
     li,lsi=lambda:list(mi()),lambda:list(msi())
-    out,export,p,pp=[],lambda:print('\n'.join(map(str, out))),lambda x :out.append(x),lambda array:p(' '.join(map(str,array)))
-    try:exec('from hq import L,LT,see,info,cmdIO,_generator_\nline=[cmdIO(),main(),export(),_generator_()]\nfor l in line:l')
-    except(FileNotFoundError,ModuleNotFoundError):main();export()
+    out,export,p,pp=[],lambda:print('\n'.join(map(str, out)), end=''),lambda x :out.append(x),lambda array:p(' '.join(map(str,array)))
+    try:exec('from hq import see,info,cmdIO,_generator_\nline=[cmdIO(),main(),export(),_generator_()]\nfor l in line:l')
+    except(FileNotFoundError,ModuleNotFoundError):master_flag=True;main();export()

@@ -36,7 +36,7 @@ def cmdIO() -> None: # standard input output for python commands instead of term
 	sys.stdin = open(F'{input_file}', 'r')
 	sys.stdout = open(F'{output_file}', 'w')
 	
-def _generator_() -> None: # to match the generated result with the AC output as testcases only for native use
+def GEN() -> None: # to match the generated result with the AC output as testcases only for native use
 	# close the previous file first, otherwise it won't work
 	sys.stdout.close()
 	with open(output_file, 'r+') as f: generated = f.readlines()
@@ -229,7 +229,6 @@ class INFO: # Displays info about a specific array
     def processor(self): self.numerical() if str(self.l[0]).isnumeric() else self.alphabetical()
 
 def info( l : list): i = INFO(l); i.processor()
-
 
 
 
